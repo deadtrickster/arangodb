@@ -1309,6 +1309,10 @@ add_custom_target(arangodb
 
 add_subdirectory(utils/gdb-pretty-printers/immer/test)
 
+if (USE_FUZZERS)
+  add_subdirectory(fuzz)
+endif()
+
 # Generate JS_SHA1SUM.txt over everything installed into the JS directory.
 # Declared last on purpose: install rules run in declaration order (CMP0082),
 # so this executes after every other install rule — including the client-tools
