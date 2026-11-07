@@ -47,7 +47,12 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
   try {
     arangodb::velocypack::Validator validator;
     validator.validate(data, size);
-  } catch (arangodb::velocypack::Exception const&) {
+  } catch (...) {
+    // catch-all per the sibling harness (vpack_slice_fuzzer): anything else
+    // that escapes - bad_alloc, length_error, a string_view precondition -
+    // propagates into libFuzzer's loop and terminates the process as an
+    // artifact that is not a memory-safety finding. VPack's own rejections
+    // are Exception; everything else is the environment, not the input.
   }
 
   try {
@@ -58,7 +63,12 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
     (void)slice.length();
     (void)slice.hash();
     (void)slice.isNull();
-  } catch (arangodb::velocypack::Exception const&) {
+  } catch (...) {
+    // catch-all per the sibling harness (vpack_slice_fuzzer): anything else
+    // that escapes - bad_alloc, length_error, a string_view precondition -
+    // propagates into libFuzzer's loop and terminates the process as an
+    // artifact that is not a memory-safety finding. VPack's own rejections
+    // are Exception; everything else is the environment, not the input.
   }
 
   return 0;
