@@ -1,0 +1,5 @@
+# ==5411==ERROR: AddressSanitizer: SEGV on unknown address (pc 0x555637c283ad bp 0x7ffc4c0eccd0 sp 0x7ffc4c0ecca0 T0)
+#     #0 0x555637c283ad in arangodb::velocypack::SliceBase<arangodb::velocypack::Slice, arangodb::velocypack::Slice>::head() const /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/SliceBase.h:143:59
+#     #1 0x555637c287bc in arangodb::velocypack::SliceBase<arangodb::velocypack::Slice, arangodb::velocypack::Slice>::type() const /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/SliceBase.h:152:66
+#     #2 0x555637b8884e in arangodb::velocypack::Dumper::dumpValue(arangodb::velocypack::Slice, arangodb::velocypack::Slice const*) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/src/Dumper.cpp:421:17
+# SUMMARY: AddressSanitizer: SEGV /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/SliceBase.h:143:59 in arangodb::velocypack::SliceBase<arangodb::velocypack::Slice, arangodb::velocypack::Slice>::head() const
