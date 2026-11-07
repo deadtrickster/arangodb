@@ -9,6 +9,7 @@ has no file on disk. The pre-slice hang gate asserts the two agree.
 
 4ed3faf468082eac4eda4924e4673874e50c30f816c05c73246fd56cf78163d0  0012  hang  fuzz/findings/2026-11-07-rocksdb-logreader-recyclable-spin/input.bin  (pending upstream drain-contract fix)
 9bc17d8b0544f6d99531870b7852303e6b3be467defb3ce18729d9d18e59f313  0012  hang  fuzz/findings/2026-11-07-rocksdb-logreader-recyclable-spin/input-2-length-desync.bin  (pending upstream drain-contract fix)
+de9f15651ec4737f5456d8a53f5a7b46fb4a08a1676e79ee9802046795984d13  0012  hang  fuzz/findings/2026-11-07-rocksdb-logreader-recyclable-spin/input-3-vvv.bin  (third witness, found by the block-fragmenting harness: 3-byte "VVV", type flipped to kRecyclableFirstType=6 by mutation 0x56%5=1, same first_record_read_ && !recycled_ guard, frame lands on the header-parse at :480 because that is where the loop's attribution sits. Same class, same fix.)
 c59dc4e44ff99288156d4dff2168f6ac7ddee6b1fc7ccc0754656ffaa6d351ea  0006  unfixed  fuzz/findings/2025-11-06-stringutils-rtrim-strlen/input-2-plus1.bin  (second witness, found by the number-converter rebuild; rTrim strlen OOB. Withdrawal = the arangodb commit fixing rTrim's ctor — lib/Basics, not the velocypack submodule)
 
 Both seeds re-enter the corpus in the same commit as the submodule bump that
