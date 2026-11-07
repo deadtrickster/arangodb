@@ -241,3 +241,47 @@ if(TARGET rocksdb)
     ${PROJECT_SOURCE_DIR}/3rdParty/rocksdb
     ${PROJECT_SOURCE_DIR}/3rdParty/rocksdb/include)
 endif()
+
+# ------------------------------------------------------------------------------
+# aql_functions_fuzzer: every registered AQL function through one direct call
+# ------------------------------------------------------------------------------
+# pg-fuzz's scalar_types/datetime/regex/encoding family, transposed: the 237
+# registered functions in AqlFunctionFeature.cpp share one C++ signature, so
+# one selector byte covers the whole table.
+
+# The AQL function table transitively reaches most of the server
+# (DatabaseFeature, Scheduler, RestHandler, Cluster…). Linking every
+# library arangod links is the honest shape: this is a full-leg target
+# with the same build cost as arangod, and filtering the 234 functions
+# to the subset that links against `arango` alone would silently
+# narrow the fuzzed surface.
+set(ARANGO_FULL_LIBS arango)
+foreach(_lib
+    arango_rest_server arango_scheduler arango_agency arango_aql
+    arango_auth arango_cache arango_cluster arango_cluster_engine
+    arango_cluster_engine_rest arango_common_rest_handler
+    arango_feature_phases arango_general_server arango_iresearch
+    arango_metrics arango_network arango_replication arango_replication2
+    arango_rest_handler arango_rocksdb_engine arango_rocksdb_rest
+    arango_sharding arango_storage_engine arango_system_monitor
+    arango_transaction arango_utils arango_vector_index arango_vocbase
+    arango_zkd arango_graph arango_indexes arango_metrics
+    arango_iresearch arango_rocksdb_engine
+    arango_activities arango_async_registry arango_actor
+    arango_assertions arango_build_id arango_cluster_utils
+    arango_crash_handler arango_futures arango_inspection
+    arango_inspection_vpack arango_system_monitor_activities
+    arango_system_monitor_async_registry)
+  if(TARGET ${_lib})
+    list(APPEND ARANGO_FULL_LIBS ${_lib})
+  endif()
+endforeach()
+
+if(TARGET arango)
+  add_fuzzer_target(aql_functions_fuzzer
+    SOURCES aql_functions_fuzzer.cpp
+    LIBS ${ARANGO_FULL_LIBS}
+  )
+  target_include_directories(aql_functions_fuzzer PRIVATE
+    ${PROJECT_SOURCE_DIR}/lib/Inspection/include)
+endif()
