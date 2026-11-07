@@ -6,9 +6,21 @@ pg-fuzz's structure: **one binary per surface**, coverage-guided via
 time, and a **crash-only oracle** (crash, assertion failure, ASan or USan
 report — see below).
 
-| binary        | surface                                                              |
-| ------------- | -------------------------------------------------------------------- |
-| `vpack_fuzzer`| VelocyPack binary validation (`velocypack::Validator`) and JSON parsing (`velocypack::Parser::fromJson`), over an instrumented copy of `3rdParty/velocypack` |
+| binary | surface | links |
+| ------ | ------- | ----- |
+| `vpack_fuzzer` | VelocyPack binary validation (`velocypack::Validator`) + JSON parsing (`Parser::fromJson`), own instrumented copy of `3rdParty/velocypack` | self-contained |
+| `vpack_slice_fuzzer` | the accessor layer a REST handler uses (`Slice::get`/`at`, iteration, `toJson`) | self-contained |
+| `http1_fuzzer` | HTTP/1.1 framing through llhttp, request and response modes, `HttpCommTask`'s own callbacks | self-contained (llhttp) |
+| `http2_fuzzer` | HTTP/2 framing through nghttp2 as a server session (`nghttp2_session_mem_recv`) | self-contained (nghttp2::nghttp2) |
+| `basics_strings_fuzzer` | `StringUtils` helpers behind the AQL string functions | `arango` (full leg) |
+| `replication2_message_fuzzer` | `AppendEntriesRequest::fromVelocyPack` — a follower decoding its leader's message | `arango` (full leg) |
+| `rocksdb_wal_fuzzer` | WAL record decoding with recomputed CRCs (`log::Reader`), the xlogreader technique | `rocksdb`+`snappy` (full leg) |
+
+The first four are the **fast quartet** (`fuzz/build.sh`'s default set):
+minutes from a bare `-DUSE_FUZZERS=On` configure. The last three need tree
+libraries and join with `ARANGO_FUZZ_FULL=1`; `fuzz/build.sh` is the oss-fuzz /
+db-fuzz recipe (with `fuzz/Dockerfile`), the way the harnesses are actually
+built and swept from outside the tree.
 
 ## Building
 
