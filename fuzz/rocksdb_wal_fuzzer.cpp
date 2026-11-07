@@ -44,17 +44,54 @@ class CountingReporter : public log::Reader::Reporter {
   std::string last_status_;
 };
 
-// One physical record: 7-byte header + payload, CRC recomputed.
+// One logical record, laid out the way the REAL writer lays it out: a record
+// whose header+payload would cross a 32 KiB block boundary is split into
+// kFirst/kMiddle/kLast fragments with a zero trailer filling the block's tail
+// (log_writer.cc's EmitPhysicalRecord + AddRecord). An unsplit straddling
+// record is something no writer ever emits, and the decoder answers it with
+// kBadRecordLen by construction — so without this, every large payload pushed
+// all later records past the boundary and the harness spent its budget on a
+// shape the decoder rejects without parsing.
 void PutRecord(std::string& out, uint8_t type, char const* payload, size_t n) {
-  size_t const off = out.size();
-  out.resize(off + 7 + n);
-  char* p = out.data() + off;
-  p[4] = static_cast<char>(n & 0xff);
-  p[5] = static_cast<char>((n >> 8) & 0xff);
-  p[6] = static_cast<char>(type);
-  std::memcpy(p + 7, payload, n);
-  uint32_t const crc = crc32c::Value(reinterpret_cast<char const*>(p) + 6, n + 1);
-  EncodeFixed32(p, crc32c::Mask(crc));  // masked, exactly as the writer stores it
+  constexpr uint32_t kBlock = 32768;        // log_format's kBlockSize
+  constexpr uint32_t kHdr = 7;              // log_format's kHeaderSize
+  size_t pos = 0;                            // payload position
+  bool first = true;
+  do {
+    uint64_t const blockRemain =
+        kBlock - (out.size() % kBlock);      // bytes left in this block
+    uint32_t const avail =
+        static_cast<uint32_t>(blockRemain > kHdr ? blockRemain - kHdr : 0);
+    uint32_t const take =
+        static_cast<uint32_t>(n - pos < avail ? n - pos : avail);
+    uint8_t frag;
+    if (take == 0) {
+      // no room for even a header: pad the block tail and retry
+      out.resize(out.size() + blockRemain, '\0');
+      continue;
+    }
+    if (first && pos + take >= n) {
+      frag = type;                           // whole record in one fragment
+    } else if (first) {
+      frag = log::kFirstType;
+    } else if (pos + take >= n) {
+      frag = log::kLastType;
+    } else {
+      frag = log::kMiddleType;
+    }
+    size_t const off = out.size();
+    out.resize(off + kHdr + take);
+    char* p = out.data() + off;
+    p[4] = static_cast<char>(take & 0xff);
+    p[5] = static_cast<char>((take >> 8) & 0xff);
+    p[6] = static_cast<char>(frag);
+    std::memcpy(p + kHdr, payload + pos, take);
+    uint32_t const crc =
+        crc32c::Value(reinterpret_cast<char const*>(p) + 6, take + 1);
+    EncodeFixed32(p, crc32c::Mask(crc));
+    pos += take;
+    first = false;
+  } while (pos < n);
 }
 
 // Fix up the CRC of every record in a buffer whose headers we recognise.
@@ -107,7 +144,7 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
     // The preamble length, defined ONCE: the mutation offset and the guard
     // below both bind on this constant, so a future edit that changes either
     // half independently fails the static_assert or the guard, not the oracle.
-    constexpr size_t kPreamble = 7 + sizeof("seed-header") - 1;  // 19
+    constexpr size_t kPreamble = 7 + sizeof("seed-header");  // 19: 7 hdr + 11 chars + NUL
     static_assert(kPreamble == 19, "preamble is the seed-header record");
     size_t const first = kPreamble;  // start of the fuzzed record
     // Mechanical form of the comment above: the offset binds on kPreamble,
