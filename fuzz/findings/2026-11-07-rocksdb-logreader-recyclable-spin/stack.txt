@@ -1,0 +1,10 @@
+==96== ERROR: libFuzzer: timeout after 25 seconds
+    #0 0x55ee5c59ce95 in __sanitizer_print_stack_trace (/build/build-asan/bin/rocksdb_wal_fuzzer+0x2ec2e95) (BuildId: 53b8153f8fff245245971ab679068b07389073d8)
+    #1 0x55ee5c4eb40c in fuzzer::PrintStackTrace() crtstuff.c
+    #2 0x55ee5c4d117b in fuzzer::Fuzzer::AlarmCallback() crtstuff.c
+    #3 0x7efc31645caf  (/usr/lib/x86_64-linux-gnu/libc.so.6+0x45caf) (BuildId: 066527e430a32768d82741e00b81eebb1a872294)
+    #4 0x55ee5c4fc86a in __asan_stack_malloc_2 (/build/build-asan/bin/rocksdb_wal_fuzzer+0x2e2286a) (BuildId: 53b8153f8fff245245971ab679068b07389073d8)
+    #5 0x55ee5c5f8dbd in rocksdb::log::Reader::ReadPhysicalRecord(rocksdb::Slice*, unsigned long*, unsigned long*) /home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/db/log_reader.cc:464
+    #6 0x55ee5c5f7470 in rocksdb::log::Reader::ReadRecord(rocksdb::Slice*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>*, rocksdb::WALRecoveryMode, unsigned long*) /home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/db/log_reader.cc:92:9
+    #7 0x55ee5c5d9d80 in LLVMFuzzerTestOneInput /home/dead/Projects/arangodb/arangodb/fuzz/rocksdb_wal_fuzzer.cpp:160:20
+    #8 0x55ee5c4d290f in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) crtstuff.c
