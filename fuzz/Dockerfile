@@ -15,8 +15,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ninja-build \
     && rm -rf /var/lib/apt/lists/*
 
-# The image carries the recipe at $SRC/build.sh (helper.py runs `bash
-# /src/build.sh`); the tree is mounted by the driver at
-# $SRC/$PROJECT_NAME, which build.sh resolves itself. No WORKDIR:
+# The image carries the recipe at $SRC/build.sh — the base image's `compile`
+# entrypoint runs `bash -eux $SRC/build.sh` — and the tree is mounted by the
+# driver at $SRC/$PROJECT_NAME, which build.sh resolves itself. No WORKDIR:
 # helper.py refuses a local checkout when WORKDIR is $SRC.
 COPY build.sh $SRC/
