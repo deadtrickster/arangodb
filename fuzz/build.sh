@@ -69,6 +69,18 @@ if [ "${ARANGO_SEED_OPENMP:-1}" = "1" ]; then
   OMP_ARGS="-DOpenMP_C_FLAGS=-fopenmp=libomp -DOpenMP_CXX_FLAGS=-fopenmp=libomp -DOpenMP_C_LIB_NAMES=omp -DOpenMP_CXX_LIB_NAMES=omp -DOpenMP_omp_LIBRARY=$LIBOMP_PATH -DOpenMP_pthread_LIBRARY=pthread"
 fi
 
+# Coverage instrumentation for the WHOLE tree, not just the harness TU.
+# -fsanitize=fuzzer-no-link on the fuzz target alone (fuzz/CMakeLists.txt)
+# instruments one translation unit; anything linked from the tree's libraries
+# then carries no counters and libFuzzer steers on the harness's own branches
+# (measured: 524 counters with libarango blind, 1905 with librocksdb blind,
+# vs 33764 for the self-contained targets that compile their own copies).
+# oss-fuzz's env already carries this flag; appending it here is idempotent
+# for that case and fixes the case where it does not (bare project_dir=).
+# fuzzer-NO-link: the engine is linked per-target, never tree-wide.
+CFLAGS="${CFLAGS:-} -fsanitize=fuzzer-no-link"
+CXXFLAGS="${CXXFLAGS:-} -fsanitize=fuzzer-no-link"
+
 cmake -G Ninja -S "$TREE" -B "$WORK" \
   -DCMAKE_C_COMPILER="${CC:-clang}" \
   -DCMAKE_CXX_COMPILER="${CXX:-clang++}" \
