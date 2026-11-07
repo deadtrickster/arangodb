@@ -26,6 +26,20 @@ TREE="${ARANGO_TREE:-$SRC/${PROJECT_NAME:-arangodb}}"
 [ -f "$TREE/CMakeLists.txt" ] || TREE="$SRC"
 mkdir -p "$OUT" "$WORK"
 
+# The tree has no libc++ support at all (nothing in CMakeLists or scripts
+# references it); oss-fuzz's CXXFLAGS carry -stdlib=libc++ and velocypack's
+# BasicString<uint8_t> needs std::char_traits<unsigned char>, which libc++
+# does not specialise — so the whole build is libstdc++. Strip the flag
+# wherever the environment may put it.
+#
+# CONSTRAINT: this is safe only because LIB_FUZZING_ENGINE is NOT linked
+# (see the note below — our targets carry their own engine flag). A prebuilt
+# engine .a compiled against libc++ would need a matching stdlib; if that
+# ever changes, this strip must go and libc++ support must come to the tree
+# first.
+CFLAGS="${CFLAGS//-stdlib=libc++/}"
+CXXFLAGS="${CXXFLAGS//-stdlib=libc++/}"
+
 TARGETS="vpack_fuzzer vpack_slice_fuzzer http1_fuzzer http2_fuzzer"
 if [ "${ARANGO_FUZZ_FULL:-0}" = "1" ]; then
   TARGETS="$TARGETS basics_strings_fuzzer replication2_message_fuzzer"
