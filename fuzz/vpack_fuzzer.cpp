@@ -40,7 +40,11 @@ ARANGO_FUZZ_ABI_SELF_TEST()
 // expected to throw velocypack::Exception, which is normal control flow, not
 // a finding: the oracle is crash/assert/ASan/UBSan only.
 extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
-  if (data == nullptr || size == 0) {
+  if (data == nullptr || size == 0 || size > (1u << 16)) {
+    // same cap as the sibling harnesses (vpack_slice: 1<<16, WAL: 1<<15,
+    // http: 1<<16): an unbounded seed drives the JSON parser's recursion
+    // with nothing bounding it, and a stack exhaustion there reads as a
+    // finding on this target - the artifact class a campaign does not want
     return 0;
   }
 
