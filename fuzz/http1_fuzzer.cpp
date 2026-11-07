@@ -11,6 +11,10 @@
 
 #include <llhttp.h>
 
+#include "abi_self_test.h"
+
+ARANGO_FUZZ_ABI_SELF_TEST()
+
 namespace {
 
 struct Counter {

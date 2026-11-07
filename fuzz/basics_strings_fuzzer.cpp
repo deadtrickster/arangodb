@@ -10,6 +10,10 @@
 
 #include "Basics/StringUtils.h"
 
+#include "abi_self_test.h"
+
+ARANGO_FUZZ_ABI_SELF_TEST()
+
 extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
   if (size < 2 || size > 4096) {
     return 0;

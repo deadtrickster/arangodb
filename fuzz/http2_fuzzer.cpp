@@ -12,6 +12,10 @@
 
 #include <nghttp2/nghttp2.h>
 
+#include "abi_self_test.h"
+
+ARANGO_FUZZ_ABI_SELF_TEST()
+
 namespace {
 
 int on_begin_headers(nghttp2_session*, nghttp2_frame const*, void*) { return 0; }

@@ -13,6 +13,10 @@
 
 #include "Replication2/ReplicatedLog/NetworkMessages.h"
 
+#include "abi_self_test.h"
+
+ARANGO_FUZZ_ABI_SELF_TEST()
+
 using namespace arangodb::replication2::replicated_log;
 
 extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {

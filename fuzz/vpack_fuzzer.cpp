@@ -30,6 +30,10 @@
 #include "velocypack/Slice.h"
 #include "velocypack/Validator.h"
 
+#include "abi_self_test.h"
+
+ARANGO_FUZZ_ABI_SELF_TEST()
+
 // Fuzzes both VelocyPack decoding paths with the same input: binary VPack
 // validation (what a server does with a request body already in VPack) and
 // JSON parsing (what it does with a JSON request body). Malformed input is

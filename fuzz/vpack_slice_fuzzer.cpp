@@ -20,6 +20,10 @@
 #include <velocypack/Validator.h>
 #include <velocypack/velocypack-common.h>
 
+#include "abi_self_test.h"
+
+ARANGO_FUZZ_ABI_SELF_TEST()
+
 using namespace arangodb::velocypack;
 
 namespace {

@@ -26,6 +26,10 @@
 #include "util/crc32c.h"
 #include "file/sequence_file_reader.h"
 
+#include "abi_self_test.h"
+
+ARANGO_FUZZ_ABI_SELF_TEST()
+
 using namespace ROCKSDB_NAMESPACE;
 
 namespace {
