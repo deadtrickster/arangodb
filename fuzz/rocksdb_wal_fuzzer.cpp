@@ -104,13 +104,19 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
   // needs no exemption list. A future sixth mode must either keep that
   // invariant or extend the oracle's exemption.
   {
-    size_t const first = 7 + 12;  // start of the fuzzed record
-    // Mechanical form of the comment above: every mutation goes through
-    // `first`, so this fires on a sixth mode that writes into the framing
-    // record - hard abort, not assert, because the fuzz build does not
-    // define NDEBUG away and the failure must name itself.
-    if (first < 19) {
-      std::fprintf(stderr, "mutation offset %zu inside the preamble\n", first);
+    // The preamble length, defined ONCE: the mutation offset and the guard
+    // below both bind on this constant, so a future edit that changes either
+    // half independently fails the static_assert or the guard, not the oracle.
+    constexpr size_t kPreamble = 7 + sizeof("seed-header") - 1;  // 19
+    static_assert(kPreamble == 19, "preamble is the seed-header record");
+    size_t const first = kPreamble;  // start of the fuzzed record
+    // Mechanical form of the comment above: the offset binds on kPreamble,
+    // not on a second literal, so a sixth mode whose offset lands inside the
+    // framing record fires here - hard abort, not assert, because the fuzz
+    // build does not define NDEBUG away and the failure must name itself.
+    if (first < kPreamble) {
+      std::fprintf(stderr, "mutation offset %zu inside the %zu-byte preamble\n",
+                   first, kPreamble);
       abort();
     }
     size_t const recLen = 7 + payloadLen;

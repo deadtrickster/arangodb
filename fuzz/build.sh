@@ -42,7 +42,9 @@ CXXFLAGS="${CXXFLAGS//-stdlib=libc++/}"
 
 TARGETS="vpack_fuzzer vpack_slice_fuzzer http1_fuzzer http2_fuzzer"
 if [ "${ARANGO_FUZZ_FULL:-0}" = "1" ]; then
-  TARGETS="$TARGETS basics_strings_fuzzer replication2_message_fuzzer"
+  # rocksdb_wal_fuzzer links the rocksdb target (plus snappy, PRIVATEly linked
+  # and non-propagating), so it joins the full set with the umbrella pair.
+  TARGETS="$TARGETS basics_strings_fuzzer replication2_message_fuzzer rocksdb_wal_fuzzer"
 fi
 
 # NOTE: $LIB_FUZZING_ENGINE is deliberately NOT in the global linker flags —
@@ -103,10 +105,19 @@ for t in $TARGETS; do
   cp "$WORK/bin/$t" "$OUT/"
 done
 
-# corpora and dictionaries: libFuzzer starts from whatever it is given
-# (the recipe dir may be outside the tree under db-fuzz; use both paths)
+# corpora and dictionaries: libFuzzer starts from whatever it is given.
+# Contents, not the directory itself: a bare `cp -r dir out` on a second source
+# nests (out/corpus/corpus), and QUARANTINE.md must NOT ride into the corpus a
+# slice loads — it is the ledger, not an input.
+COPIED_CORPUS=0
 for _c in "$TREE/fuzz" "$SRC/fuzz"; do
-  [ -d "$_c/corpus" ] && cp -r "$_c/corpus" "$OUT/corpus" 2>/dev/null || true
+  if [ -d "$_c/corpus" ] && [ "$COPIED_CORPUS" -eq 0 ]; then
+    mkdir -p "$OUT/corpus"
+    for _t in "$_c/corpus"/*/; do
+      [ -d "$_t" ] && cp -r "$_t" "$OUT/corpus/" 2>/dev/null || true
+    done
+    COPIED_CORPUS=1
+  fi
   cp "$_c"/*.dict "$OUT/" 2>/dev/null || true
 done
 
