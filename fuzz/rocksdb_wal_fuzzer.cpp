@@ -147,42 +147,51 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
     constexpr size_t kPreamble = 7 + sizeof("seed-header");  // 19: 7 hdr + 11 chars + NUL
     static_assert(kPreamble == 19, "preamble is the seed-header record");
     size_t const first = kPreamble;  // start of the fuzzed record
-    // Mechanical form of the comment above: the offset binds on kPreamble,
-    // not on a second literal, so a sixth mode whose offset lands inside the
-    // framing record fires here - hard abort, not assert, because the fuzz
-    // build does not define NDEBUG away and the failure must name itself.
-    if (first < kPreamble) {
-      std::fprintf(stderr, "mutation offset %zu inside the %zu-byte preamble\n",
-                   first, kPreamble);
-      abort();
-    }
+    // The guard binds on the value each mode ACTUALLY writes, computed once
+    // per mode before the write — not on `first`, which is a constant here and
+    // would make the check constant-false (an optimiser deletes it; the
+    // tripwire reads as protection and protects nothing). A future sixth
+    // mode's offset lands in `off` and the guard fires if it is inside the
+    // preamble.
+    size_t off = first;
+    auto guardOffset = [&](size_t o) {
+      if (o < kPreamble) {
+        std::fprintf(stderr,
+                     "mutation offset %zu inside the %zu-byte preamble\n", o,
+                     kPreamble);
+        abort();
+      }
+      return o;
+    };
     size_t const recLen = 7 + payloadLen;
     switch (mutation % 5) {
       case 0:  // flip a payload byte
         if (payloadLen > 0) {
-          log[first + 7 + (mutation % payloadLen)] ^=
+          log[guardOffset(first) + 7 + (mutation % payloadLen)] ^=
               static_cast<char>(1 << (mutation % 8));
         }
         break;
       case 1:  // flip the type byte
-        log[first + 6] = static_cast<char>(mutation % 16);
+        log[guardOffset(first) + 6] = static_cast<char>(mutation % 16);
         break;
       case 2:  // lie about the length
         if (recLen > 8) {
-          log[first + 4] = static_cast<char>(mutation);
+          log[guardOffset(first) + 4] = static_cast<char>(mutation);
         }
         break;
       case 3:  // duplicate the record
-        log.insert(first, log.substr(first, recLen));
+        off = guardOffset(first);
+        log.insert(off, log.substr(off, recLen));
         break;
       case 4:  // truncate inside the record
         if (recLen > 8) {
-          log.resize(first + 7 + (mutation % payloadLen));
+          log.resize(guardOffset(first) + 7 + (mutation % payloadLen));
         }
         break;
       default:
         break;
     }
+    (void)off;
   }
   RecomputeCrcs(log);
 
