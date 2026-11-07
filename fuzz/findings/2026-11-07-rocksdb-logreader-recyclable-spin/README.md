@@ -3,6 +3,20 @@
 Found by the first `fuzz-infra` campaign against `rocksdb_wal_fuzzer` (the
 pg-fuzz `xlogreader` port) — 27 seconds in, on a **2-byte input** (`88 00`).
 
+## Addendum: a second artifact, found once the fuzzer could see
+
+After tree-wide coverage instrumentation (531d120afdc; this target went from
+1 905 to 837 496 counters), the first steered run found a second hang within
+its first minute: `input-2-length-desync.bin`, 207 bytes, same frame pair
+(`ReadPhysicalRecord:464` / `ReadRecord:92`). The input begins `5c 09 ...` —
+mutation byte 0x5c selects the length-lie mutation, and 0x09 appears in the
+payload: the lie desynchronises the record walk so payload bytes become
+headers, and a mid-log byte claiming a recyclable type meets the same
+`first_record_read_ && !recycled_` guard. Same defect class, different route —
+and evidence that the drain-contract fix (consume the buffer on kBadRecord,
+both paths) covers the class rather than one input. Blind, this took luck;
+sighted, the fuzzer walked straight to it.
+
 ## Reproduce
 
 ```sh

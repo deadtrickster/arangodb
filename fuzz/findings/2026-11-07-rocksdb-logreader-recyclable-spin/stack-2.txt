@@ -1,0 +1,8 @@
+self-test: caught ok (abi self-test #1)
+#147	INITED cov: 5112 ft: 6428 corp: 137/39Kb exec/s: 0 rss: 145Mb
+#150	NEW    cov: 5112 ft: 6435 corp: 138/39Kb lim: 4001 exec/s: 0 rss: 145Mb L: 317/4001 MS: 3 CopyPart-ShuffleBytes-InsertRepeatedBytes-
+#157	NEW    cov: 5113 ft: 6436 corp: 139/40Kb lim: 4001 exec/s: 0 rss: 145Mb L: 997/4001 MS: 2 InsertByte-CopyPart-
+#163	NEW    cov: 5113 ft: 6437 corp: 140/41Kb lim: 4001 exec/s: 0 rss: 146Mb L: 399/4001 MS: 1 EraseBytes-
+#171	NEW    cov: 5113 ft: 6438 corp: 141/41Kb lim: 4001 exec/s: 0 rss: 146Mb L: 587/4001 MS: 3 ShuffleBytes-ShuffleBytes-InsertRepeatedBytes-
+#203	NEW    cov: 5113 ft: 6439 corp: 142/42Kb lim: 4001 exec/s: 0 rss: 147Mb L: 923/4001 MS: 2 CMP-CrossOver- DE: "\377\377|\323bB\204\032"-
+#212	NEW    cov: 5113 ft: 6440 corp: 143/42Kb lim: 4001 exec/s: 0 rss: 148Mb L: 146/4001 MS: 4 PersAutoDict-ChangeBinInt-CopyPart-PersAutoDict- DE: "\377\377|\323bB\204\032"-"\377\377|\323bB\204\032"-
