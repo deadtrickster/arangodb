@@ -105,6 +105,14 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
   // invariant or extend the oracle's exemption.
   {
     size_t const first = 7 + 12;  // start of the fuzzed record
+    // Mechanical form of the comment above: every mutation goes through
+    // `first`, so this fires on a sixth mode that writes into the framing
+    // record - hard abort, not assert, because the fuzz build does not
+    // define NDEBUG away and the failure must name itself.
+    if (first < 19) {
+      std::fprintf(stderr, "mutation offset %zu inside the preamble\n", first);
+      abort();
+    }
     size_t const recLen = 7 + payloadLen;
     switch (mutation % 5) {
       case 0:  // flip a payload byte
