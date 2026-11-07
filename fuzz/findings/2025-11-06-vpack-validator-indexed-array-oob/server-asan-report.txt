@@ -1,0 +1,190 @@
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:1084:9: runtime error: load of misaligned address 0x7eabb041c40d for type 'uint64_t' (aka 'unsigned long'), which requires 8 byte alignment
+0x7eabb041c40d: note: pointer points here
+ 3f 88 20 00 01 01 1a  6c 65 76 65 6c 64 62 2e  42 79 74 65 77 69 73 65  43 6f 6d 70 61 72 61 74  6f
+             ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:1087:9: runtime error: load of misaligned address 0x7eabb041c415 for type 'uint64_t' (aka 'unsigned long'), which requires 8 byte alignment
+0x7eabb041c415: note: pointer points here
+ 65 76 65 6c 64 62 2e  42 79 74 65 77 69 73 65  43 6f 6d 70 61 72 61 74  6f 72 89 40 01 01 f4 03  0c
+             ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:1090:9: runtime error: load of misaligned address 0x7eabb041c41d for type 'uint64_t' (aka 'unsigned long'), which requires 8 byte alignment
+0x7eabb041c41d: note: pointer points here
+ 79 74 65 77 69 73 65  43 6f 6d 70 61 72 61 74  6f 72 89 40 01 01 f4 03  0c 5a 04 00 01 02 00 04  00
+             ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:1093:9: runtime error: load of misaligned address 0x7eabb041c425 for type 'uint64_t' (aka 'unsigned long'), which requires 8 byte alignment
+0x7eabb041c425: note: pointer points here
+ 6f 6d 70 61 72 61 74  6f 72 89 40 01 01 f4 03  0c 5a 04 00 01 02 00 04  00 fc 2c 26 f9 06 00 01  09
+             ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:526:40: runtime error: load of misaligned address 0x7eabb041c43f for type 'uint32_t' (aka 'unsigned int'), which requires 4 byte alignment
+0x7eabb041c43f: note: pointer points here
+ 26 f9 06 00 01  09 00 03 06 04 00 6d 09  65 ad 35 00 01 01 1a 6c  65 76 65 6c 64 62 2e 42  79 74 65
+             ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:530:40: runtime error: load of misaligned address 0x7eabb041c443 for type 'uint16_t' (aka 'unsigned short'), which requires 2 byte alignment
+0x7eabb041c443: note: pointer points here
+ 01  09 00 03 06 04 00 6d 09  65 ad 35 00 01 01 1a 6c  65 76 65 6c 64 62 2e 42  79 74 65 77 69 73 65
+              ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:1078:9: runtime error: load of misaligned address 0x7eabb041c44c for type 'uint64_t' (aka 'unsigned long'), which requires 8 byte alignment
+0x7eabb041c44c: note: pointer points here
+  65 ad 35 00 01 01 1a 6c  65 76 65 6c 64 62 2e 42  79 74 65 77 69 73 65 43  6f 6d 70 61 72 61 74 6f
+              ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:1081:9: runtime error: load of misaligned address 0x7eabb041c454 for type 'uint64_t' (aka 'unsigned long'), which requires 8 byte alignment
+0x7eabb041c454: note: pointer points here
+  65 76 65 6c 64 62 2e 42  79 74 65 77 69 73 65 43  6f 6d 70 61 72 61 74 6f  72 02 04 03 06 04 00 c8
+              ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:1075:9: runtime error: load of misaligned address 0x7eabb041c577 for type 'uint64_t' (aka 'unsigned long'), which requires 8 byte alignment
+0x7eabb041c577: note: pointer points here
+ e0 21 39 00 01  01 1a 6c 65 76 65 6c 64  62 2e 42 79 74 65 77 69  73 65 43 6f 6d 70 61 72  61 74 6f
+             ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:1063:9: runtime error: load of misaligned address 0x7eabb0462454 for type 'uint64_t' (aka 'unsigned long'), which requires 8 byte alignment
+0x7eabb0462454: note: pointer points here
+  bf f7 5a 00 01 04 00 00  00 00 00 00 00 01 00 00  00 03 09 31 00 00 00 00  00 00 00 01 01 09 30 00
+              ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:1066:9: runtime error: load of misaligned address 0x7eabb046245c for type 'uint64_t' (aka 'unsigned long'), which requires 8 byte alignment
+0x7eabb046245c: note: pointer points here
+  00 00 00 00 00 01 00 00  00 03 09 31 00 00 00 00  00 00 00 01 01 09 30 00  00 00 00 00 00 00 01 37
+              ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:1069:9: runtime error: load of misaligned address 0x7eabb0462464 for type 'uint64_t' (aka 'unsigned long'), which requires 8 byte alignment
+0x7eabb0462464: note: pointer points here
+  00 03 09 31 00 00 00 00  00 00 00 01 01 09 30 00  00 00 00 00 00 00 01 37  0b 37 04 42 69 64 41 31
+              ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:1072:9: runtime error: load of misaligned address 0x7eabb046246c for type 'uint64_t' (aka 'unsigned long'), which requires 8 byte alignment
+0x7eabb046246c: note: pointer points here
+  00 00 00 01 01 09 30 00  00 00 00 00 00 00 01 37  0b 37 04 42 69 64 41 31  44 6e 61 6d 65 47 5f 73
+              ^ 
+/home/dead/Projects/arangodb/arangodb/3rdParty/rocksdb/util/crc32c.cc:1060:9: runtime error: load of misaligned address 0x7eabb04634c6 for type 'uint64_t' (aka 'unsigned long'), which requires 8 byte alignment
+0x7eabb04634c6: note: pointer points here
+ 02 ff 61 00 01 11  00 00 00 00 00 00 00 02  00 00 00 01 09 32 00 00  00 00 00 00 00 0a 0c 06  0c 04
+             ^ 
+=================================================================
+==2==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x7cfbb061bfb8 at pc 0x55e6a46d2c1f bp 0x7bda6ca212a0 sp 0x7bda6ca20a60
+READ of size 8 at 0x7cfbb061bfb8 thread T55 (SchedWorker)
+    #0 0x55e6a46d2c1e in __asan_memcpy (/home/dead/Projects/arangodb/arangodb/build-asan/bin/arangod+0x1f372c1e) (BuildId: 7633836a366f411a01b6d96388181cf12da1ffcc)
+    #1 0x55e6ba6ac589 in unsigned long arangodb::velocypack::readIntegerFixed<unsigned long, 8ul>(unsigned char const*) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/velocypack-common.h:353:5
+    #2 0x55e6ba6acb5b in unsigned long arangodb::velocypack::readIntegerNonEmpty<unsigned long>(unsigned char const*, unsigned long) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/velocypack-common.h:387:14
+    #3 0x55e6ba6ae6d9 in arangodb::velocypack::Validator::validateIndexedArray(unsigned char const*, unsigned long) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/src/Validator.cpp:411:15
+    #4 0x55e6ba6ac69b in arangodb::velocypack::Validator::validateArray(unsigned char const*, unsigned long) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/src/Validator.cpp:278:5
+    #5 0x55e6ba6ab4be in arangodb::velocypack::Validator::validatePart(unsigned char const*, unsigned long, bool) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/src/Validator.cpp:138:7
+    #6 0x55e6ba6aaba4 in arangodb::velocypack::Validator::validate(unsigned char const*, unsigned long, bool) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/src/Validator.cpp:74:3
+    #7 0x55e6b4a4d4ae in arangodb::HttpRequest::payload(bool) /home/dead/Projects/arangodb/arangodb/lib/Rest/HttpRequest.cpp:904:39
+    #8 0x55e6a723bd13 in arangodb::RestBaseHandler::parseVPackBody(bool&) /home/dead/Projects/arangodb/arangodb/arangod/RestHandler/RestBaseHandler.cpp:58:28
+    #9 0x55e6a6748bb2 in arangodb::RestCollectionHandler::handleCommandPost() /home/dead/Projects/arangodb/arangodb/arangod/RestHandler/RestCollectionHandler.cpp:359:33
+    #10 0x55e6a673c0fd in arangodb::RestCollectionHandler::executeAsync() /home/dead/Projects/arangodb/arangodb/arangod/RestHandler/RestCollectionHandler.cpp:90:16
+    #11 0x55e6a6ccc4da in arangodb::rest::RestHandler::executeEngine() /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/RestHandler.cpp:555:14
+    #12 0x55e6a6cc78d2 in arangodb::rest::RestHandler::runHandlerStateMachine() /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/RestHandler.cpp:500:12
+    #13 0x55e6a6cd9c7d in arangodb::rest::RestHandler::runHandler(std::function<void (arangodb::rest::RestHandler*)>) /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/RestHandler.cpp:908:3
+    #14 0x55e6a6bb4e98 in arangodb::rest::CommTask::handleRequestSync(std::shared_ptr<arangodb::rest::RestHandler>)::$_0::operator()() /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/CommTask.cpp:694:14
+    #15 0x55e6a6bb4a15 in arangodb::Scheduler::WorkItem<arangodb::rest::CommTask::handleRequestSync(std::shared_ptr<arangodb::rest::RestHandler>)::$_0>::invoke() /home/dead/Projects/arangodb/arangodb/arangod/Scheduler/Scheduler.h:222:13
+    #16 0x55e6b96b1236 in arangodb::SupervisedScheduler::runWorker() /home/dead/Projects/arangodb/arangodb/arangod/Scheduler/SupervisedScheduler.cpp:474:15
+    #17 0x55e6b96cbb17 in arangodb::SupervisedSchedulerWorkerThread::run() /home/dead/Projects/arangodb/arangodb/arangod/Scheduler/SupervisedScheduler.cpp:146:36
+    #18 0x55e6b9875cec in arangodb::BasicThread::runMe() /home/dead/Projects/arangodb/arangodb/lib/Basics/BasicThread.cpp:329:5
+    #19 0x55e6b9874e3b in arangodb::BasicThread::startThread(void*) /home/dead/Projects/arangodb/arangodb/lib/Basics/BasicThread.cpp:136:10
+    #20 0x55e6b996b4f2 in ThreadStarter(void*) /home/dead/Projects/arangodb/arangodb/lib/Basics/threads-posix.cpp:77:5
+    #21 0x55e6a46d284a in asan_thread_start(void*) crtstuff.c
+    #22 0x7fdbb14a3df9 in start_thread nptl/pthread_create.c:454:8
+    #23 0x7fdbb15375cb in __GI___clone3 misc/../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+0x7cfbb061bfb8 is located 8 bytes before 300-byte region [0x7cfbb061bfc0,0x7cfbb061c0ec)
+allocated by thread T43 (Io) here:
+    #0 0x55e6a46d53d0 in realloc (/home/dead/Projects/arangodb/arangodb/build-asan/bin/arangod+0x1f3753d0) (BuildId: 7633836a366f411a01b6d96388181cf12da1ffcc)
+    #1 0x55e6a4932bb6 in arangodb::velocypack::Buffer<unsigned char>::grow(unsigned long) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/Buffer.h:307:27
+    #2 0x55e6a47997c4 in arangodb::velocypack::Buffer<unsigned char>::reserve(unsigned long) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/Buffer.h:260:7
+    #3 0x55e6a6be006f in arangodb::velocypack::Buffer<unsigned char>::push_back(char) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/Buffer.h:233:5
+    #4 0x55e6b4a3ee5b in arangodb::HttpRequest::appendNullTerminator() /home/dead/Projects/arangodb/arangodb/lib/Rest/HttpRequest.cpp:124:12
+    #5 0x55e6a6be4624 in arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::doProcessRequest() /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/HttpCommTask.cpp:575:13
+    #6 0x55e6a6bd90c1 in arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::processRequest() /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/HttpCommTask.cpp:534:5
+    #7 0x55e6a6bd66bb in arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::readCallback(boost::system::error_code) /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/HttpCommTask.cpp:378:9
+    #8 0x55e6a6b48150 in arangodb::rest::GeneralCommTask<(arangodb::rest::SocketType)1>::asyncReadSome() /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/GeneralCommTask.cpp:114:40
+    #9 0x55e6a6c31e17 in arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)::operator()(boost::system::error_code const&, unsigned long) const /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/HttpCommTask.cpp:494:8
+    #10 0x55e6a6c2bc91 in auto auto arangodb::withLogContext<arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)>(arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)&&)::'lambda'<typename ...$T, typename $T0>($T&&...)::operator()<boost::system::error_code const&, unsigned long const&, void>($T&&...) /home/dead/Projects/arangodb/arangodb/lib/Logger/LogContext.h:788:12
+    #11 0x55e6a6c2afb5 in boost::asio::detail::read_op<boost::asio::basic_stream_socket<boost::asio::ip::tcp, boost::asio::any_io_executor>, boost::asio::mutable_buffer, boost::asio::mutable_buffer const*, boost::asio::detail::transfer_at_least_t, auto arangodb::withLogContext<arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)>(arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)&&)::'lambda'<typename ...$T, typename $T0>($T&&...)>::operator()(boost::system::error_code, unsigned long, int) /home/dead/Projects/arangodb/arangodb/build-asan/_deps/boost-src/libs/asio/include/boost/asio/impl/read.hpp:416:9
+    #12 0x55e6a6c2f15e in boost::asio::detail::binder2<boost::asio::detail::read_op<boost::asio::basic_stream_socket<boost::asio::ip::tcp, boost::asio::any_io_executor>, boost::asio::mutable_buffer, boost::asio::mutable_buffer const*, boost::asio::detail::transfer_at_least_t, auto arangodb::withLogContext<arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)>(arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)&&)::'lambda'<typename ...$T, typename $T0>($T&&...)>, boost::system::error_code, unsigned long>::operator()() /home/dead/Projects/arangodb/arangodb/build-asan/_deps/boost-src/libs/asio/include/boost/asio/detail/bind_handler.hpp:182:5
+    #13 0x55e6a6c2ee77 in void boost::asio::detail::handler_work<boost::asio::detail::read_op<boost::asio::basic_stream_socket<boost::asio::ip::tcp, boost::asio::any_io_executor>, boost::asio::mutable_buffer, boost::asio::mutable_buffer const*, boost::asio::detail::transfer_at_least_t, auto arangodb::withLogContext<arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)>(arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)&&)::'lambda'<typename ...$T, typename $T0>($T&&...)>, boost::asio::any_io_executor, void>::complete<boost::asio::detail::binder2<boost::asio::detail::read_op<boost::asio::basic_stream_socket<boost::asio::ip::tcp, boost::asio::any_io_executor>, boost::asio::mutable_buffer, boost::asio::mutable_buffer const*, boost::asio::detail::transfer_at_least_t, auto arangodb::withLogContext<arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)>(arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)&&)::'lambda'<typename ...$T, typename $T0>($T&&...)>, boost::system::error_code, unsigned long>>(arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)&, boost::asio::detail::read_op<boost::asio::basic_stream_socket<boost::asio::ip::tcp, boost::asio::any_io_executor>, boost::asio::mutable_buffer, boost::asio::mutable_buffer const*, boost::asio::detail::transfer_at_least_t, auto arangodb::withLogContext<arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)>(arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)&&)::'lambda'<typename ...$T, typename $T0>($T&&...)>&) /home/dead/Projects/arangodb/arangodb/build-asan/_deps/boost-src/libs/asio/include/boost/asio/detail/handler_work.hpp:471:7
+    #14 0x55e6a6c2e31f in boost::asio::detail::reactive_socket_recv_op<boost::asio::mutable_buffer, boost::asio::detail::read_op<boost::asio::basic_stream_socket<boost::asio::ip::tcp, boost::asio::any_io_executor>, boost::asio::mutable_buffer, boost::asio::mutable_buffer const*, boost::asio::detail::transfer_at_least_t, auto arangodb::withLogContext<arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)>(arangodb::rest::HttpCommTask<(arangodb::rest::SocketType)1>::checkProtocolUpgrade()::'lambda'(boost::system::error_code const&, unsigned long)&&)::'lambda'<typename ...$T, typename $T0>($T&&...)>, boost::asio::any_io_executor>::do_complete(void*, boost::asio::detail::scheduler_operation*, boost::system::error_code const&, unsigned long) /home/dead/Projects/arangodb/arangodb/build-asan/_deps/boost-src/libs/asio/include/boost/asio/detail/reactive_socket_recv_op.hpp:172:9
+    #15 0x55e6a658e39a in boost::asio::detail::scheduler_operation::complete(void*, boost::system::error_code const&, unsigned long) /home/dead/Projects/arangodb/arangodb/build-asan/_deps/boost-src/libs/asio/include/boost/asio/detail/scheduler_operation.hpp:41:5
+    #16 0x55e6a658c45b in boost::asio::detail::scheduler::do_run_one(boost::asio::detail::conditionally_enabled_mutex<boost::asio::detail::posix_mutex>::scoped_lock&, boost::asio::detail::scheduler_thread_info&, boost::system::error_code const&) /home/dead/Projects/arangodb/arangodb/build-asan/_deps/boost-src/libs/asio/include/boost/asio/detail/impl/scheduler.ipp:505:12
+    #17 0x55e6a658b356 in boost::asio::detail::scheduler::run(boost::system::error_code&) /home/dead/Projects/arangodb/arangodb/build-asan/_deps/boost-src/libs/asio/include/boost/asio/detail/impl/scheduler.ipp:221:10
+    #18 0x55e6a6cae5fd in boost::asio::io_context::run() /home/dead/Projects/arangodb/arangodb/build-asan/_deps/boost-src/libs/asio/include/boost/asio/impl/io_context.ipp:64:24
+    #19 0x55e6a6cad59f in arangodb::rest::IoContext::IoThread::run() /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/IoContext.cpp:48:27
+    #20 0x55e6b9875cec in arangodb::BasicThread::runMe() /home/dead/Projects/arangodb/arangodb/lib/Basics/BasicThread.cpp:329:5
+    #21 0x55e6b9874e3b in arangodb::BasicThread::startThread(void*) /home/dead/Projects/arangodb/arangodb/lib/Basics/BasicThread.cpp:136:10
+    #22 0x55e6b996b4f2 in ThreadStarter(void*) /home/dead/Projects/arangodb/arangodb/lib/Basics/threads-posix.cpp:77:5
+    #23 0x55e6a46d284a in asan_thread_start(void*) crtstuff.c
+
+Thread T55 (SchedWorker) created by T53 (SchedMan) here:
+    #0 0x55e6a46b9115 in pthread_create (/home/dead/Projects/arangodb/arangodb/build-asan/bin/arangod+0x1f359115) (BuildId: 7633836a366f411a01b6d96388181cf12da1ffcc)
+    #1 0x55e6b996a6c0 in TRI_StartThread(unsigned long*, char const*, void (*)(void*), void*) /home/dead/Projects/arangodb/arangodb/lib/Basics/threads-posix.cpp:136:12
+    #2 0x55e6b987d9ca in arangodb::BasicThread::start(arangodb::basics::ConditionVariable*) /home/dead/Projects/arangodb/arangodb/lib/Basics/BasicThread.cpp:298:13
+    #3 0x55e6b96bbe6f in arangodb::SupervisedScheduler::WorkerState::start() /home/dead/Projects/arangodb/arangodb/arangod/Scheduler/SupervisedScheduler.cpp:946:66
+    #4 0x55e6b96b7917 in arangodb::SupervisedScheduler::startOneThread() /home/dead/Projects/arangodb/arangodb/arangod/Scheduler/SupervisedScheduler.cpp:867:15
+    #5 0x55e6b96b49e9 in arangodb::SupervisedScheduler::runSupervisor() /home/dead/Projects/arangodb/arangodb/arangod/Scheduler/SupervisedScheduler.cpp:502:5
+    #6 0x55e6b96c98c7 in arangodb::SupervisedSchedulerManagerThread::run() /home/dead/Projects/arangodb/arangodb/arangod/Scheduler/SupervisedScheduler.cpp:138:36
+    #7 0x55e6b9875cec in arangodb::BasicThread::runMe() /home/dead/Projects/arangodb/arangodb/lib/Basics/BasicThread.cpp:329:5
+    #8 0x55e6b9874e3b in arangodb::BasicThread::startThread(void*) /home/dead/Projects/arangodb/arangodb/lib/Basics/BasicThread.cpp:136:10
+    #9 0x55e6b996b4f2 in ThreadStarter(void*) /home/dead/Projects/arangodb/arangodb/lib/Basics/threads-posix.cpp:77:5
+    #10 0x55e6a46d284a in asan_thread_start(void*) crtstuff.c
+
+Thread T53 (SchedMan) created by T0 here:
+    #0 0x55e6a46b9115 in pthread_create (/home/dead/Projects/arangodb/arangodb/build-asan/bin/arangod+0x1f359115) (BuildId: 7633836a366f411a01b6d96388181cf12da1ffcc)
+    #1 0x55e6b996a6c0 in TRI_StartThread(unsigned long*, char const*, void (*)(void*), void*) /home/dead/Projects/arangodb/arangodb/lib/Basics/threads-posix.cpp:136:12
+    #2 0x55e6b987d9ca in arangodb::BasicThread::start(arangodb::basics::ConditionVariable*) /home/dead/Projects/arangodb/arangodb/lib/Basics/BasicThread.cpp:298:13
+    #3 0x55e6b96abbe3 in arangodb::SupervisedScheduler::start() /home/dead/Projects/arangodb/arangodb/arangod/Scheduler/SupervisedScheduler.cpp:352:18
+    #4 0x55e6b966db74 in arangodb::SchedulerFeature::start() /home/dead/Projects/arangodb/arangodb/arangod/Scheduler/SchedulerFeature.cpp:132:25
+    #5 0x55e6b0c8b500 in arangodb::application_features::ApplicationServer::start() /home/dead/Projects/arangodb/arangodb/lib/ApplicationFeatures/ApplicationServer.cpp:665:15
+    #6 0x55e6b0c7bbba in arangodb::application_features::ApplicationServer::run(int, char**) /home/dead/Projects/arangodb/arangodb/lib/ApplicationFeatures/ApplicationServer.cpp:229:3
+    #7 0x55e6a471be5b in runServer(int, char**, arangodb::ArangoGlobalContext&) /home/dead/Projects/arangodb/arangodb/arangod/RestServer/arangod.cpp:83:14
+    #8 0x55e6a471a99d in main /home/dead/Projects/arangodb/arangodb/arangod/RestServer/arangod.cpp:140:13
+    #9 0x7fdbb142a600 in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:59:16
+    #10 0x7fdbb142a717 in __libc_start_main csu/../csu/libc-start.c:360:3
+    #11 0x55e6a462fa24 in _start (/home/dead/Projects/arangodb/arangodb/build-asan/bin/arangod+0x1f2cfa24) (BuildId: 7633836a366f411a01b6d96388181cf12da1ffcc)
+
+Thread T43 (Io) created by T0 here:
+    #0 0x55e6a46b9115 in pthread_create (/home/dead/Projects/arangodb/arangodb/build-asan/bin/arangod+0x1f359115) (BuildId: 7633836a366f411a01b6d96388181cf12da1ffcc)
+    #1 0x55e6b996a6c0 in TRI_StartThread(unsigned long*, char const*, void (*)(void*), void*) /home/dead/Projects/arangodb/arangodb/lib/Basics/threads-posix.cpp:136:12
+    #2 0x55e6b987d9ca in arangodb::BasicThread::start(arangodb::basics::ConditionVariable*) /home/dead/Projects/arangodb/arangodb/lib/Basics/BasicThread.cpp:298:13
+    #3 0x55e6a6cadee9 in arangodb::rest::IoContext::IoContext() /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/IoContext.cpp:60:11
+    #4 0x55e6a6566e24 in T* std::construct_at<arangodb::rest::IoContext>(T*, T0&&...) /usr/lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_construct.h:110:22
+    #5 0x55e6a655ffbb in void std::allocator_traits<std::allocator<arangodb::rest::IoContext>>::construct<arangodb::rest::IoContext>(std::allocator<arangodb::rest::IoContext>&, arangodb::rest::IoContext*) /usr/lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/alloc_traits.h:676:4
+    #6 0x55e6a655ffbb in arangodb::rest::IoContext& std::vector<arangodb::rest::IoContext, std::allocator<arangodb::rest::IoContext>>::emplace_back<>() /usr/lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/vector.tcc:117:6
+    #7 0x55e6a6556159 in arangodb::rest::GeneralServer::GeneralServer(arangodb::GeneralServerFeature&, unsigned long, bool) /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/GeneralServer.cpp:55:15
+    #8 0x55e6a669471e in std::__detail::_MakeUniq<arangodb::rest::GeneralServer>::__single_object std::make_unique<arangodb::rest::GeneralServer, arangodb::GeneralServerFeature&, unsigned long&, bool&>(arangodb::GeneralServerFeature&, unsigned long&, bool&) /usr/lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/unique_ptr.h:1084:34
+    #9 0x55e6a667aef0 in arangodb::GeneralServerFeature::buildServers() /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/GeneralServerFeature.cpp:627:25
+    #10 0x55e6a6679806 in arangodb::GeneralServerFeature::prepare() /home/dead/Projects/arangodb/arangodb/arangod/GeneralServer/GeneralServerFeature.cpp:411:3
+    #11 0x55e6b0c87dc3 in arangodb::application_features::ApplicationServer::prepare() /home/dead/Projects/arangodb/arangodb/lib/ApplicationFeatures/ApplicationServer.cpp:633:17
+    #12 0x55e6b0c7bb47 in arangodb::application_features::ApplicationServer::run(int, char**) /home/dead/Projects/arangodb/arangodb/lib/ApplicationFeatures/ApplicationServer.cpp:218:3
+    #13 0x55e6a471be5b in runServer(int, char**, arangodb::ArangoGlobalContext&) /home/dead/Projects/arangodb/arangodb/arangod/RestServer/arangod.cpp:83:14
+    #14 0x55e6a471a99d in main /home/dead/Projects/arangodb/arangodb/arangod/RestServer/arangod.cpp:140:13
+    #15 0x7fdbb142a600 in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:59:16
+    #16 0x7fdbb142a717 in __libc_start_main csu/../csu/libc-start.c:360:3
+    #17 0x55e6a462fa24 in _start (/home/dead/Projects/arangodb/arangodb/build-asan/bin/arangod+0x1f2cfa24) (BuildId: 7633836a366f411a01b6d96388181cf12da1ffcc)
+
+Shadow bytes around the buggy address:
+  0x7cfbb061bd00: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7cfbb061bd80: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7cfbb061be00: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7cfbb061be80: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7cfbb061bf00: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+=>0x7cfbb061bf80: fa fa fa fa fa fa fa[fa]00 00 00 00 00 00 00 00
+  0x7cfbb061c000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7cfbb061c080: 00 00 00 00 00 00 00 00 00 00 00 00 00 04 fa fa
+  0x7cfbb061c100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7cfbb061c180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7cfbb061c200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==2==ABORTING

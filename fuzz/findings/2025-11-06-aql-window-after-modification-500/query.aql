@@ -1,0 +1,1 @@
+FOR doc IN @@input INSERT {value: doc.value} into @@output WINDOW {preceding: 1, following: 1} AGGREGATE av = AVG(doc.value) RETURN av

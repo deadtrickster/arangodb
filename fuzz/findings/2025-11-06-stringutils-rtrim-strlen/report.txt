@@ -1,0 +1,67 @@
+INFO: Running with entropic power schedule (0xFF, 100).
+INFO: Seed: 3633540796
+INFO: Loaded 1 modules   (524 inline 8-bit counters): 524 [0x55901ac85d38, 0x55901ac85f44), 
+INFO: Loaded 1 PC tables (524 PCs): 524 [0x55901ac85f48,0x55901ac88008), 
+/home/dead/Projects/arangodb/arangodb/build-asan/bin/basics_strings_fuzzer: Running 1 inputs 1 time(s) each.
+Running: ./crash-44dc51916cd638e7b7a39c34534ac160ccf0cb55
+=================================================================
+==5==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x7be027de00b8 at pc 0x55901a27c2df bp 0x7fff82dbdd40 sp 0x7fff82dbd508
+READ of size 9 at 0x7be027de00b8 thread T0
+    #0 0x55901a27c2de in strlen (/home/dead/Projects/arangodb/arangodb/build-asan/bin/basics_strings_fuzzer+0x6f12de) (BuildId: 219e12c04b8a761914c9f7b461d5ec36d1da8898)
+    #1 0x55901a350318 in std::char_traits<char>::length(char const*) /usr/lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/char_traits.h:393:9
+    #2 0x55901a34de9b in std::basic_string_view<char, std::char_traits<char>>::basic_string_view(char const*) /usr/lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/string_view:145:16
+    #3 0x55901a37d445 in std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>::basic_string<char const*, void>(char const* const&, unsigned long, unsigned long, std::allocator<char> const&) /usr/lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/basic_string.h:877:35
+    #4 0x55901a35b7d7 in arangodb::basics::StringUtils::rTrim[abi:cxx11](std::basic_string_view<char, std::char_traits<char>>, std::basic_string_view<char, std::char_traits<char>>) /home/dead/Projects/arangodb/arangodb/lib/Basics/StringUtils.cpp:435:10
+    #5 0x55901a34d161 in LLVMFuzzerTestOneInput /home/dead/Projects/arangodb/arangodb/fuzz/basics_strings_fuzzer.cpp:33:11
+    #6 0x55901a24885f in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) crtstuff.c
+    #7 0x55901a2310a3 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) crtstuff.c
+    #8 0x55901a23701c in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) crtstuff.c
+    #9 0x55901a261ed6 in main (/home/dead/Projects/arangodb/arangodb/build-asan/bin/basics_strings_fuzzer+0x6d6ed6) (BuildId: 219e12c04b8a761914c9f7b461d5ec36d1da8898)
+    #10 0x7fc02902a600 in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:59:16
+    #11 0x7fc02902a717 in __libc_start_main csu/../csu/libc-start.c:360:3
+    #12 0x55901a22b974 in _start (/home/dead/Projects/arangodb/arangodb/build-asan/bin/basics_strings_fuzzer+0x6a0974) (BuildId: 219e12c04b8a761914c9f7b461d5ec36d1da8898)
+
+0x7be027de00b8 is located 0 bytes after 8-byte region [0x7be027de00b0,0x7be027de00b8)
+allocated by thread T0 here:
+    #0 0x55901a34b761 in operator new[](unsigned long) (/home/dead/Projects/arangodb/arangodb/build-asan/bin/basics_strings_fuzzer+0x7c0761) (BuildId: 219e12c04b8a761914c9f7b461d5ec36d1da8898)
+    #1 0x55901a248765 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) crtstuff.c
+    #2 0x55901a2310a3 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) crtstuff.c
+    #3 0x55901a23701c in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) crtstuff.c
+    #4 0x55901a261ed6 in main (/home/dead/Projects/arangodb/arangodb/build-asan/bin/basics_strings_fuzzer+0x6d6ed6) (BuildId: 219e12c04b8a761914c9f7b461d5ec36d1da8898)
+    #5 0x7fc02902a600 in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:59:16
+    #6 0x7fc02902a717 in __libc_start_main csu/../csu/libc-start.c:360:3
+    #7 0x55901a22b974 in _start (/home/dead/Projects/arangodb/arangodb/build-asan/bin/basics_strings_fuzzer+0x6a0974) (BuildId: 219e12c04b8a761914c9f7b461d5ec36d1da8898)
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow (/home/dead/Projects/arangodb/arangodb/build-asan/bin/basics_strings_fuzzer+0x6f12de) (BuildId: 219e12c04b8a761914c9f7b461d5ec36d1da8898) in strlen
+Shadow bytes around the buggy address:
+  0x7be027ddfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7be027ddfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7be027ddff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7be027ddff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7be027de0000: fa fa 06 fa fa fa 07 fa fa fa 07 fa fa fa 01 fa
+=>0x7be027de0080: fa fa 00 fa fa fa 00[fa]fa fa fa fa fa fa fa fa
+  0x7be027de0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7be027de0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7be027de0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7be027de0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7be027de0300: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==5==ABORTING

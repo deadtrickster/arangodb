@@ -1,0 +1,36 @@
+INFO: Running with entropic power schedule (0xFF, 100).
+INFO: Seed: 373753575
+INFO: Loaded 1 modules   (33898 inline 8-bit counters): 33898 [0x56469887a9f0, 0x564698882e5a), 
+INFO: Loaded 1 PC tables (33898 PCs): 33898 [0x564698882e60,0x564698907500), 
+/tmp/fv2/bin/vpack_slice_fuzzer: Running 1 inputs 1 time(s) each.
+Running: /tmp/slice-corpus/crash-176f44a777108750a45d84dc41c2a859bde85ce2
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==5==ERROR: AddressSanitizer: SEGV on unknown address (pc 0x56469868916d bp 0x7fff2e2f5390 sp 0x7fff2e2f5360 T0)
+==5==The signal is caused by a READ memory access.
+==5==Hint: this fault was caused by a dereference of a high value address (see register values below).  Disassemble the provided pc to learn which register was used.
+    #0 0x56469868916d in arangodb::velocypack::SliceBase<arangodb::velocypack::Slice, arangodb::velocypack::Slice>::head() const /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/SliceBase.h:143:59
+    #1 0x56469868957c in arangodb::velocypack::SliceBase<arangodb::velocypack::Slice, arangodb::velocypack::Slice>::type() const /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/SliceBase.h:152:66
+    #2 0x5646985e978e in arangodb::velocypack::Dumper::dumpValue(arangodb::velocypack::Slice, arangodb::velocypack::Slice const*) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/src/Dumper.cpp:421:17
+    #3 0x5646985ed0fa in arangodb::velocypack::Dumper::dumpValue(arangodb::velocypack::Slice, arangodb::velocypack::Slice const*) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/src/Dumper.cpp:573:7
+    #4 0x5646985e91d1 in arangodb::velocypack::Dumper::dump(arangodb::velocypack::Slice) /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/src/Dumper.cpp:54:3
+    #5 0x5646986a6a8d in arangodb::velocypack::SliceBase<arangodb::velocypack::Slice, arangodb::velocypack::Slice>::toJson(arangodb::velocypack::Sink*, arangodb::velocypack::Options const*) const /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/SliceBase.tpp:148:10
+    #6 0x5646986a67b5 in arangodb::velocypack::SliceBase<arangodb::velocypack::Slice, arangodb::velocypack::Slice>::toJson[abi:cxx11](arangodb::velocypack::Options const*) const /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/SliceBase.tpp:128:3
+    #7 0x5646984b633f in (anonymous namespace)::exercise(arangodb::velocypack::Slice const&) /home/dead/Projects/arangodb/arangodb/fuzz/vpack_slice_fuzzer.cpp:33:13
+    #8 0x5646984b55d5 in LLVMFuzzerTestOneInput /home/dead/Projects/arangodb/arangodb/fuzz/vpack_slice_fuzzer.cpp:119:3
+    #9 0x5646983b0cbf in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) (/tmp/fv2/bin/vpack_slice_fuzzer+0x1c4cbf) (BuildId: 97f93ffc5e2814990e48fba0b0a3a843bba07174)
+    #10 0x564698399523 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) (/tmp/fv2/bin/vpack_slice_fuzzer+0x1ad523) (BuildId: 97f93ffc5e2814990e48fba0b0a3a843bba07174)
+    #11 0x56469839f49c in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) (/tmp/fv2/bin/vpack_slice_fuzzer+0x1b349c) (BuildId: 97f93ffc5e2814990e48fba0b0a3a843bba07174)
+    #12 0x5646983ca2f6 in main (/tmp/fv2/bin/vpack_slice_fuzzer+0x1de2f6) (BuildId: 97f93ffc5e2814990e48fba0b0a3a843bba07174)
+    #13 0x7f541962a600 in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:59:16
+    #14 0x7f541962a717 in __libc_start_main csu/../csu/libc-start.c:360:3
+    #15 0x564698393df4 in _start (/tmp/fv2/bin/vpack_slice_fuzzer+0x1a7df4) (BuildId: 97f93ffc5e2814990e48fba0b0a3a843bba07174)
+
+==5==Register values:
+rax = 0x1960000026000000  rbx = 0x00007fff2e2f53e0  rcx = 0x0000000000000001  rdx = 0x00000000000001b8  
+rdi = 0x0000000000000001  rsi = 0x0000000000000001  rbp = 0x00007fff2e2f5390  rsp = 0x00007fff2e2f5360  
+ r8 = 0x000056469890ce00   r9 = 0x00007fffffffff3f  r10 = 0x00007fffffffff01  r11 = 0x0000100065c56d01  
+r12 = 0x00007b74187e0010  r13 = 0x000056469890ce00  r14 = 0x00007b74187e0030  r15 = 0x000000000000000a  
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV /home/dead/Projects/arangodb/arangodb/3rdParty/velocypack/include/velocypack/SliceBase.h:143:59 in arangodb::velocypack::SliceBase<arangodb::velocypack::Slice, arangodb::velocypack::Slice>::head() const
+==5==ABORTING
