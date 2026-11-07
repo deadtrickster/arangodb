@@ -98,6 +98,11 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
 
   // Mutate: one byte inside the fuzzed record's payload, or its header, or a
   // splice — then make every CRC valid again so the decoder must parse it.
+  // ALL five modes operate at `first` = 7+12 = 19, i.e. strictly AFTER the
+  // 19-byte seed-header preamble: no mode removes or overwrites the first
+  // record, so the property-(c) oracle below (first ReadRecord == seed-header)
+  // needs no exemption list. A future sixth mode must either keep that
+  // invariant or extend the oracle's exemption.
   {
     size_t const first = 7 + 12;  // start of the fuzzed record
     size_t const recLen = 7 + payloadLen;
