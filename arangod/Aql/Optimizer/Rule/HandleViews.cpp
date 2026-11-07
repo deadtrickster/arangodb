@@ -36,6 +36,7 @@
 #include "Aql/ExecutionPlan.h"
 #include "Aql/Expression.h"
 #include "Aql/Function.h"
+#include "Aql/Functions.h"
 #include "Aql/Optimizer.h"
 #include "Aql/Optimizer/Utils/IResearchViewSortHelpers.h"
 #include "Aql/OptimizerRule.h"
@@ -61,13 +62,12 @@
 namespace arangodb::iresearch {
 
 #ifndef USE_ENTERPRISE
-Variable const* replaceOffsetInfo(aql::CalculationNode& calcNode,
-                                  aql::Variable const& ref,
-                                  aql::AstNode const& node);
-Variable const* replaceOffsetInfo(aql::CalculationNode& calcNode,
-                                  aql::Variable const& ref,
-                                  aql::AstNode const& node) {
-  functions::NotImplementedEE(nullptr, node, {});  // will throw
+// No community rule optimizes OFFSET_INFO, and executing it throws; this stub
+// does the same for queries that reach the SEARCH + OFFSET path.
+aql::Variable const* replaceOffsetInfo(aql::CalculationNode& calcNode,
+                                      aql::Variable const& ref,
+                                      aql::AstNode const& node) {
+  aql::functions::NotImplementedEE(nullptr, node, {});  // will throw
   return nullptr;
 }
 #endif
