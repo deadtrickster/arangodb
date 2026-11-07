@@ -19,7 +19,11 @@
 
 OUT="${OUT:-$PWD/out}"
 WORK="${WORK:-$PWD/work}"
+# oss-fuzz runs `bash $SRC/build.sh` with SRC=/src: the recipe lives at $SRC
+# and the tree at $SRC/$PROJECT_NAME. Locally (no SRC) the tree is the cwd.
 SRC="${SRC:-$PWD}"
+TREE="${ARANGO_TREE:-$SRC/${PROJECT_NAME:-arangodb}}"
+[ -f "$TREE/CMakeLists.txt" ] || TREE="$SRC"
 mkdir -p "$OUT" "$WORK"
 
 TARGETS="vpack_fuzzer vpack_slice_fuzzer http1_fuzzer http2_fuzzer"
@@ -33,7 +37,7 @@ fi
 # engine per target itself, so the harnesses link correctly without it; the
 # variable is accepted for contract compatibility and ignored.
 
-cmake -G Ninja -S "$SRC" -B "$WORK" \
+cmake -G Ninja -S "$TREE" -B "$WORK" \
   -DCMAKE_C_COMPILER="${CC:-clang}" \
   -DCMAKE_CXX_COMPILER="${CXX:-clang++}" \
   -DBASE_C_FLAGS="${CFLAGS:-}" \
@@ -55,8 +59,11 @@ for t in $TARGETS; do
 done
 
 # corpora and dictionaries: libFuzzer starts from whatever it is given
-cp -r "$SRC/fuzz/corpus" "$OUT/corpus" 2>/dev/null || true
-cp "$SRC"/fuzz/*.dict "$OUT/" 2>/dev/null || true
+# (the recipe dir may be outside the tree under db-fuzz; use both paths)
+for _c in "$TREE/fuzz" "$SRC/fuzz"; do
+  [ -d "$_c/corpus" ] && cp -r "$_c/corpus" "$OUT/corpus" 2>/dev/null || true
+  cp "$_c"/*.dict "$OUT/" 2>/dev/null || true
+done
 
 echo "built: $TARGETS"
 echo "in: $OUT"
