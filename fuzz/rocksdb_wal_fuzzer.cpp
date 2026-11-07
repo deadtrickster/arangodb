@@ -161,9 +161,29 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
 
   std::string record;
   Slice slice;
+  int recordIndex = 0;
   while (logReader.ReadRecord(&slice, &record)) {
-    // touching the record is what recovery does next
-    (void)slice.size();
+    // Property (c) of the recyclable-spin regression class: every record
+    // written BEFORE the damage must come back unchanged. The harness frames
+    // the fuzzed record with a known-good first record ("seed-header"), so the
+    // first thing the reader returns must be exactly that, whatever the
+    // mutation did to the middle of the log. A fix that "simplifies" the
+    // resync into swallowing the damage fails here, in-process, on the exact
+    // input.
+    if (recordIndex == 0) {
+      if (slice.size() != 12 ||
+          std::memcmp(slice.data(), "seed-header", 12) != 0) {
+        std::fprintf(stderr,
+                     "REGRESSION: first record came back wrong: %.12s (%zu B)\n",
+                     slice.data(), slice.size());
+        abort();
+      }
+    }
+    ++recordIndex;
   }
+  // Property (a): the read terminates (being here at all proves it - the
+  // pre-fix spin never left the loop). Property (b): corruption reported, not
+  // swallowed - a non-zero reporter count is EXPECTED for damaged logs; a
+  // desync that reports nothing and returns nothing would lose data silently.
   return 0;
 }
