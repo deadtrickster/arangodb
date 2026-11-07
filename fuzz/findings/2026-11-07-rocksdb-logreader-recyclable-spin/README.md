@@ -60,11 +60,31 @@ out-of-process WAL campaign never reached this: a flipped byte fails the CRC
 and RocksDB discards the record before parsing it; only the CRC-recomputing
 harness gets the decoder to execute on the mutant.
 
-## Fix shape
+## Fix shape (revised after review — the guard exists twice)
 
-The rejected header must not be re-read forever. Either consume it
-(`buffer_.remove_prefix(kHeaderSize)` before returning `kBadRecord`, reporting
-the drop), or set a sticky flag so the second visit takes a different branch.
-The `recycled_`-related guards deserve the same audit for every early `return`
-in that function — each one that leaves `buffer_` untouched is a candidate spin
-when the caller retries.
+The same guard is in BOTH decode paths, and both callers retry without
+progress:
+
+- legacy: `ReadPhysicalRecord` :490-492 returns `kBadRecord` before any
+  `remove_prefix`; `ReadRecord`'s `case kBadRecord:` (:274-280) breaks and
+  re-enters on the same bytes.
+- fragmented: `TryReadFragment` :872-875 sets `*fragment_type_or_err =
+  kBadRecord` and `return true`, again with the buffer unconsumed; the
+  caller's `while (TryReadFragment(...))` (:656) with `case kBadHeader:
+  kBadRecord: kEof: kOldRecord:` (:759-768) breaks and loops.
+
+A per-guard `remove_prefix` patches one site and leaves the other; the repair
+belongs to the CALLER's contract, and the file already wrote the policy three
+lines from the guard: on checksum failure (:538-545) rocksdb does NOT resync
+byte-by-byte — it drains (`drop_size = buffer_.size(); buffer_.clear()`),
+because the comment there says a length field you cannot trust can land you on
+"some fragment of a real log record that just happens to look like a valid log
+record". A one-byte skip has exactly that flaw. So the contract becomes:
+
+  on kBadRecord the buffer is CONSUMED (drained, drop reported),
+
+matching the checksum path — and both guards get it by construction. Test
+consequence: with the buffer drained at both paths the failure becomes `kEof`
+and the caller reports a corrupt log instead of hanging; the regression test
+should assert exactly that (reader terminates, corruption reported, no
+record returned past the good one) for the 2-byte repro.
