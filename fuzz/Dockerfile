@@ -17,4 +17,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # The recipe and the tree are placed by the driver (helper.py copies the
 # project into $SRC and runs `bash $SRC/build.sh`); nothing to COPY here.
-WORKDIR $SRC
+# No WORKDIR: helper.py refuses a local checkout when WORKDIR is $SRC, and the
+# tree lands at $SRC/$PROJECT_NAME, which build.sh resolves itself.
