@@ -46,7 +46,10 @@ soc-pokec-*
 
 Documentation/man
 
+# scratch build scripts at the repo root; the oss-fuzz recipe under fuzz/ is
+# deliberate (fuzz/build.sh) and must not be ignored
 build.sh
+!/fuzz/build.sh
 /build*/
 Build64/
 Build32/
