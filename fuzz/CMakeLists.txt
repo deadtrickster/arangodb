@@ -213,3 +213,28 @@ if(TARGET nghttp2::nghttp2)
     LIBS nghttp2::nghttp2
   )
 endif()
+
+# ------------------------------------------------------------------------------
+# rocksdb_wal_fuzzer: WAL record decoding with recomputed CRCs (xlogreader)
+# ------------------------------------------------------------------------------
+# The decoder runs on mutated bytes whose checksums are made valid again, the
+# way pg-fuzz's xlogreader reaches PostgreSQL's record parser. Needs the
+# rocksdb target, so it joins the full leg, not the fast quartet.
+
+if(TARGET rocksdb)
+  # rocksdb links snappy PRIVATEly, so it does not propagate through LIBS;
+  # the harness must name it too.
+  add_fuzzer_target(rocksdb_wal_fuzzer
+    SOURCES rocksdb_wal_fuzzer.cpp
+    LIBS rocksdb snappy
+  )
+  # rocksdb's CMakeLists sets -DOS_LINUX via add_definitions(), which is
+  # directory-scoped: it does not reach this target, and port/port.h then
+  # includes neither port_posix.h nor port_win.h, so port::Mutex and friends
+  # are undeclared. Define the platform selection here too.
+  target_compile_definitions(rocksdb_wal_fuzzer PRIVATE
+    ROCKSDB_PLATFORM_POSIX=1 OS_LINUX=1)
+  target_include_directories(rocksdb_wal_fuzzer PRIVATE
+    ${PROJECT_SOURCE_DIR}/3rdParty/rocksdb
+    ${PROJECT_SOURCE_DIR}/3rdParty/rocksdb/include)
+endif()
