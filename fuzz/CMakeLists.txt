@@ -4,7 +4,10 @@
 # See fuzz/README.md for how to build and run these.
 # ------------------------------------------------------------------------------
 
-option(USE_FUZZERS "build libFuzzer harnesses" OFF)
+# The option is declared at top level (CMakeLists.txt), not here: a
+# subdirectory's option() is invisible in a default configure, because the
+# subdirectory is only added when the variable is already true. Reachable
+# standalone only via `cmake -S fuzz` (rare); the top-level declaration wins.
 
 # Guard 1: clang. -fsanitize=fuzzer/fuzzer-no-link and the libFuzzer runtime
 # are LLVM features (gcc has no -fsanitize=fuzzer).
