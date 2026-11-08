@@ -122,5 +122,12 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
   } catch (...) {
   }
 
+  // AqlValue's destructor does NOT free: each one that owns a slice
+  // (the VPack path) must be destroyed explicitly or the memory leaks
+  // on every input. This was the leak the mutator subagent measured.
+  for (auto& v : values) {
+    v.destroy();
+  }
+
   return 0;
 }
