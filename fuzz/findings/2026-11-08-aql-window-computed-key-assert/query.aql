@@ -1,0 +1,1 @@
+FOR doc IN col WINDOW { [preceding]: 1, following: 1 } AGGREGATE s = SUM(doc.x) RETURN s
