@@ -278,8 +278,15 @@ foreach(_lib
 endforeach()
 
 if(TARGET arango)
+  # aql_mutator.cpp carries the structure-aware AQL mutator (aql_mutator.h,
+  # ported from serenedb's fuzz/sql_mutator.h). It links here because this is
+  # the only AQL target in the tree; there is no AQL parser target to attach it
+  # to (a Parser needs a QueryContext, which needs a Database). The mutator is
+  # OFF unless AQLMUT is set, since this target reads [selector:2][args] and not
+  # AQL text; the self-test is the way to run it:
+  #   AQLMUT_SELFTEST=1 ./bin/aql_functions_fuzzer
   add_fuzzer_target(aql_functions_fuzzer
-    SOURCES aql_functions_fuzzer.cpp
+    SOURCES aql_functions_fuzzer.cpp aql_mutator.cpp
     LIBS ${ARANGO_FULL_LIBS}
   )
   target_include_directories(aql_functions_fuzzer PRIVATE
