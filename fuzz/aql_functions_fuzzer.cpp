@@ -112,6 +112,14 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
   while (values.size() < 2) {
     values.emplace_back(std::string());
   }
+  // Upper bound: AQL functions take at most 7 declared parameters (the
+  // widest is APPROX_NEAR with 7). More than that hits the same
+  // ADB_UNREACHABLE switch-arm problem in the other direction, and a
+  // several-hundred-value span is slow for no coverage gain.
+  constexpr std::size_t kMaxArgs = 7;
+  if (values.size() > kMaxArgs) {
+    values.resize(kMaxArgs);
+  }
 
   // ExpressionContext deliberately null (see DEVIATIONS above)
   try {
