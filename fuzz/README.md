@@ -140,3 +140,59 @@ Every finding must be **minimised and stored with the exact command**:
      corpus/crash-file arguments and all flags — such that a clean checkout
      can re-run it,
    * the git revision of the tree it was found against (`git rev-parse HEAD`).
+
+## Out-of-process drivers
+
+Not every surface is a decoder, and not every finding is a crash. These
+drivers start a real server (or a fake peer) and judge behaviour:
+
+| driver | surface | oracle |
+| ------ | ------- | ------ |
+| `privilege_fuzzer.py` | AQL and REST as a non-privileged user against another user's data | a canary in any response, a request that must be refused succeeding, the victim's data fingerprint changing, the attacker's own grants changing |
+| `hostile_leader.py` | arangod as a replication-v1 *client* | crash or hang of the follower |
+| `pitr_fuzz.py` | PITR archive replay | crash or wrong recovery |
+| `iresearch_pushdown.py` | ArangoSearch `SEARCH` predicates against the equivalent collection scan | the two sides return a different set of documents or different contents |
+
+`privilege_fuzzer.py` boots a sanitized `arangod` with authentication on and a
+random JWT secret, creates `victim` (owns `victimdb.secret_coll`, whose
+documents, edge documents and analyzer carry canaries) and `attacker` (no
+access), then sends every request as the attacker under two grant profiles —
+**no grant at all** on the database, and **read on the database with an
+explicit `none` on the collection** — and reports what came back:
+
+```sh
+python3 fuzz/privilege_fuzzer.py --arangod /build/build-asan/bin/arangod
+python3 fuzz/privilege_fuzzer.py --self-test        # prove the oracles fire
+python3 fuzz/privilege_fuzzer.py --attach http://127.0.0.1:8529 --jwt-secret <hex>
+```
+
+`--self-test` deliberately over-grants the attacker and fails unless the
+canary and denied-but-2xx oracles report it, so "no findings" can be told
+apart from "the oracle is broken". Exit status is 0/1 at `--fail-on <severity>`
+and 2 for a harness error; `--json PATH` writes the machine-readable report.
+
+`iresearch_pushdown.py` is the agreement oracle for ArangoSearch. A view is a
+*pushdown* surface: the same predicate can be answered by the index or by a
+collection scan, and a wrongly pushed-down filter returns the wrong documents
+without crashing anything. The driver boots a sanitized `arangod` on a
+temporary data directory, builds a 100-document fixture with boundary values
+per type (empty and unicode strings, int64 extremes, -0.0, 2^53, bools,
+arrays, nested objects, nulls, missing attributes, mixed types), creates an
+ArangoSearch view over it (and a second one with `storeValues: id`, because
+`EXISTS()` answers differ), then runs every (column type x predicate form) cell
+twice — `SEARCH <predicate>` on the view and `FILTER <equivalent>` on the
+collection — and compares the `_key` sets and the documents themselves:
+
+```sh
+python3 fuzz/iresearch_pushdown.py --list-cells
+python3 fuzz/iresearch_pushdown.py --cells phrase,exists
+python3 fuzz/iresearch_pushdown.py --out /tmp/pushdown-report
+```
+
+Each disagreement is written as `<out>/<cell>/finding.json` with both queries,
+both results and what differs, plus a `summary.md` that groups the cells into
+failure families. Exit status 1 means at least one wrong answer, 2 a harness or
+server failure. Cells whose two sides cannot agree by design (ICU collation vs
+byte order for string ranges) and forms `SEARCH` refuses outright are reported
+in their own sections rather than as findings, so the oracle does not drown in
+noise it already knows about.
