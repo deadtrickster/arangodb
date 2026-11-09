@@ -1,0 +1,100 @@
+{
+  "cell": {
+    "column": "numeric",
+    "expect": "agree",
+    "family": "negative-zero",
+    "form": "range GTE/LTE",
+    "name": "numeric-gte-lte",
+    "note": "",
+    "view": "pd_view"
+  },
+  "context": {
+    "arangod": "/build/build-asan/bin/arangod",
+    "collection": "pd_fixture",
+    "documents": 100,
+    "driver": "fuzz/iresearch_pushdown.py",
+    "view": "pd_view",
+    "view_with_store_values": "pd_view_sv"
+  },
+  "diff": {
+    "content_mismatch": [],
+    "extra_in_index": [],
+    "missing_in_index": [
+      "k018",
+      "k043",
+      "k068"
+    ]
+  },
+  "diff_summary": "the index is missing 3 document(s): k018, k043, k068",
+  "index": {
+    "count": 26,
+    "keys": [
+      "k000",
+      "k003",
+      "k011",
+      "k013",
+      "k014",
+      "k021",
+      "k025",
+      "k028",
+      "k036",
+      "k038",
+      "k039",
+      "k046",
+      "k050",
+      "k053",
+      "k061",
+      "k063",
+      "k064",
+      "k071",
+      "k075",
+      "k078",
+      "k086",
+      "k088",
+      "k089",
+      "k092",
+      "k094",
+      "k099"
+    ],
+    "status": 200
+  },
+  "index_query": "FOR doc IN pd_view SEARCH doc.n >= 0 AND doc.n <= 1 SORT doc._key RETURN doc",
+  "kind": "disagreement",
+  "scan": {
+    "count": 29,
+    "keys": [
+      "k000",
+      "k003",
+      "k011",
+      "k013",
+      "k014",
+      "k018",
+      "k021",
+      "k025",
+      "k028",
+      "k036",
+      "k038",
+      "k039",
+      "k043",
+      "k046",
+      "k050",
+      "k053",
+      "k061",
+      "k063",
+      "k064",
+      "k068",
+      "k071",
+      "k075",
+      "k078",
+      "k086",
+      "k088",
+      "k089",
+      "k092",
+      "k094",
+      "k099"
+    ],
+    "status": 200
+  },
+  "scan_query": "FOR doc IN pd_fixture FILTER doc.n >= 0 AND doc.n <= 1 SORT doc._key RETURN doc",
+  "verdict": "unexpected"
+}

@@ -1,0 +1,66 @@
+{
+  "cell": {
+    "column": "numeric",
+    "expect": "agree",
+    "family": "int64-bounds-rounded-to-double",
+    "form": "range at 2^53",
+    "name": "numeric-precision",
+    "note": "",
+    "view": "pd_view"
+  },
+  "context": {
+    "arangod": "/build/build-asan/bin/arangod",
+    "collection": "pd_fixture",
+    "documents": 100,
+    "driver": "fuzz/iresearch_pushdown.py",
+    "view": "pd_view",
+    "view_with_store_values": "pd_view_sv"
+  },
+  "diff": {
+    "content_mismatch": [],
+    "extra_in_index": [],
+    "missing_in_index": [
+      "k024",
+      "k049",
+      "k074"
+    ]
+  },
+  "diff_summary": "the index is missing 3 document(s): k024, k049, k074",
+  "index": {
+    "count": 9,
+    "keys": [
+      "k002",
+      "k017",
+      "k027",
+      "k042",
+      "k052",
+      "k067",
+      "k077",
+      "k095",
+      "k097"
+    ],
+    "status": 200
+  },
+  "index_query": "FOR doc IN pd_view SEARCH doc.n > 9007199254740992 SORT doc._key RETURN doc",
+  "kind": "disagreement",
+  "scan": {
+    "count": 12,
+    "keys": [
+      "k002",
+      "k017",
+      "k024",
+      "k027",
+      "k042",
+      "k049",
+      "k052",
+      "k067",
+      "k074",
+      "k077",
+      "k095",
+      "k097"
+    ],
+    "status": 200
+  },
+  "scan_query": "FOR doc IN pd_fixture FILTER doc.n > 9007199254740992 SORT doc._key RETURN doc",
+  "verdict": "unexpected"
+}

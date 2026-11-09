@@ -1,0 +1,60 @@
+{
+  "cell": {
+    "column": "numeric",
+    "expect": "agree",
+    "family": "int64-bounds-rounded-to-double",
+    "form": "range near int64 max",
+    "name": "numeric-int64-max-range",
+    "note": "",
+    "view": "pd_view"
+  },
+  "context": {
+    "arangod": "/build/build-asan/bin/arangod",
+    "collection": "pd_fixture",
+    "documents": 100,
+    "driver": "fuzz/iresearch_pushdown.py",
+    "view": "pd_view",
+    "view_with_store_values": "pd_view_sv"
+  },
+  "diff": {
+    "content_mismatch": [],
+    "extra_in_index": [],
+    "missing_in_index": [
+      "k017",
+      "k042",
+      "k067",
+      "k095"
+    ]
+  },
+  "diff_summary": "the index is missing 4 document(s): k017, k042, k067, k095",
+  "index": {
+    "count": 5,
+    "keys": [
+      "k002",
+      "k027",
+      "k052",
+      "k077",
+      "k097"
+    ],
+    "status": 200
+  },
+  "index_query": "FOR doc IN pd_view SEARCH doc.n > 9223372036854775806 SORT doc._key RETURN doc",
+  "kind": "disagreement",
+  "scan": {
+    "count": 9,
+    "keys": [
+      "k002",
+      "k017",
+      "k027",
+      "k042",
+      "k052",
+      "k067",
+      "k077",
+      "k095",
+      "k097"
+    ],
+    "status": 200
+  },
+  "scan_query": "FOR doc IN pd_fixture FILTER doc.n > 9223372036854775806 SORT doc._key RETURN doc",
+  "verdict": "unexpected"
+}

@@ -1,0 +1,58 @@
+{
+  "cell": {
+    "column": "numeric",
+    "expect": "agree",
+    "family": "negative-zero",
+    "form": "equality",
+    "name": "numeric-eq-neg-zero",
+    "note": "AQL reads -0.0 as equal to 0, so the two sides must agree",
+    "view": "pd_view"
+  },
+  "context": {
+    "arangod": "/build/build-asan/bin/arangod",
+    "collection": "pd_fixture",
+    "documents": 100,
+    "driver": "fuzz/iresearch_pushdown.py",
+    "view": "pd_view",
+    "view_with_store_values": "pd_view_sv"
+  },
+  "diff": {
+    "content_mismatch": [],
+    "extra_in_index": [],
+    "missing_in_index": [
+      "k018",
+      "k043",
+      "k068"
+    ]
+  },
+  "diff_summary": "the index is missing 3 document(s): k018, k043, k068",
+  "index": {
+    "count": 5,
+    "keys": [
+      "k000",
+      "k025",
+      "k050",
+      "k075",
+      "k092"
+    ],
+    "status": 200
+  },
+  "index_query": "FOR doc IN pd_view SEARCH doc.n == -0.0 SORT doc._key RETURN doc",
+  "kind": "disagreement",
+  "scan": {
+    "count": 8,
+    "keys": [
+      "k000",
+      "k018",
+      "k025",
+      "k043",
+      "k050",
+      "k068",
+      "k075",
+      "k092"
+    ],
+    "status": 200
+  },
+  "scan_query": "FOR doc IN pd_fixture FILTER doc.n == -0.0 SORT doc._key RETURN doc",
+  "verdict": "unexpected"
+}

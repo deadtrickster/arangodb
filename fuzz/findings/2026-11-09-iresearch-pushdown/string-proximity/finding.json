@@ -1,0 +1,57 @@
+{
+  "cell": {
+    "column": "string",
+    "expect": "agree",
+    "family": "phrase-offsets",
+    "form": "proximity",
+    "name": "string-proximity",
+    "note": "offsets 1 and 3 = one token between the terms",
+    "view": "pd_view"
+  },
+  "context": {
+    "arangod": "/build/build-asan/bin/arangod",
+    "collection": "pd_fixture",
+    "documents": 100,
+    "driver": "fuzz/iresearch_pushdown.py",
+    "view": "pd_view",
+    "view_with_store_values": "pd_view_sv"
+  },
+  "diff": {
+    "content_mismatch": [],
+    "extra_in_index": [],
+    "missing_in_index": [
+      "k009",
+      "k012",
+      "k043",
+      "k046",
+      "k077",
+      "k080",
+      "k095",
+      "k099"
+    ]
+  },
+  "diff_summary": "the index is missing 8 document(s): k009, k012, k043, k046, k077, k080, k095, k099",
+  "index": {
+    "count": 0,
+    "keys": [],
+    "status": 200
+  },
+  "index_query": "FOR doc IN pd_view SEARCH PHRASE(doc.s, \"quick\", 1, \"fox\", 3, \"text_en\") SORT doc._key RETURN doc",
+  "kind": "disagreement",
+  "scan": {
+    "count": 8,
+    "keys": [
+      "k009",
+      "k012",
+      "k043",
+      "k046",
+      "k077",
+      "k080",
+      "k095",
+      "k099"
+    ],
+    "status": 200
+  },
+  "scan_query": "FOR doc IN pd_fixture LET t = TOKENS(doc.s, \"text_en\") FILTER LENGTH(t) >= 3 AND LENGTH(FOR i IN 0..MAX([LENGTH(t) - 3, 0]) FILTER t[i] == \"quick\" AND t[i + 2] == \"fox\" LIMIT 1 RETURN 1) > 0 SORT doc._key RETURN doc",
+  "verdict": "unexpected"
+}

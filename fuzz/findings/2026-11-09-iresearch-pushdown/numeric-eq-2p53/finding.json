@@ -1,0 +1,56 @@
+{
+  "cell": {
+    "column": "numeric",
+    "expect": "agree",
+    "family": "int64-bounds-rounded-to-double",
+    "form": "equality at 2^53",
+    "name": "numeric-eq-2p53",
+    "note": "",
+    "view": "pd_view"
+  },
+  "context": {
+    "arangod": "/build/build-asan/bin/arangod",
+    "collection": "pd_fixture",
+    "documents": 100,
+    "driver": "fuzz/iresearch_pushdown.py",
+    "view": "pd_view",
+    "view_with_store_values": "pd_view_sv"
+  },
+  "diff": {
+    "content_mismatch": [],
+    "extra_in_index": [
+      "k024",
+      "k049",
+      "k074"
+    ],
+    "missing_in_index": []
+  },
+  "diff_summary": "the index returns 3 extra document(s): k024, k049, k074",
+  "index": {
+    "count": 7,
+    "keys": [
+      "k006",
+      "k024",
+      "k031",
+      "k049",
+      "k056",
+      "k074",
+      "k081"
+    ],
+    "status": 200
+  },
+  "index_query": "FOR doc IN pd_view SEARCH doc.n == 9007199254740992 SORT doc._key RETURN doc",
+  "kind": "disagreement",
+  "scan": {
+    "count": 4,
+    "keys": [
+      "k006",
+      "k031",
+      "k056",
+      "k081"
+    ],
+    "status": 200
+  },
+  "scan_query": "FOR doc IN pd_fixture FILTER doc.n == 9007199254740992 SORT doc._key RETURN doc",
+  "verdict": "unexpected"
+}

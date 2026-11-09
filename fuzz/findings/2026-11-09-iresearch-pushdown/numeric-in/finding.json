@@ -1,0 +1,84 @@
+{
+  "cell": {
+    "column": "numeric",
+    "expect": "agree",
+    "family": "negative-zero",
+    "form": "IN list",
+    "name": "numeric-in",
+    "note": "",
+    "view": "pd_view"
+  },
+  "context": {
+    "arangod": "/build/build-asan/bin/arangod",
+    "collection": "pd_fixture",
+    "documents": 100,
+    "driver": "fuzz/iresearch_pushdown.py",
+    "view": "pd_view",
+    "view_with_store_values": "pd_view_sv"
+  },
+  "diff": {
+    "content_mismatch": [],
+    "extra_in_index": [],
+    "missing_in_index": [
+      "k018",
+      "k043",
+      "k068"
+    ]
+  },
+  "diff_summary": "the index is missing 3 document(s): k018, k043, k068",
+  "index": {
+    "count": 18,
+    "keys": [
+      "k000",
+      "k004",
+      "k011",
+      "k022",
+      "k025",
+      "k029",
+      "k036",
+      "k047",
+      "k050",
+      "k054",
+      "k061",
+      "k072",
+      "k075",
+      "k079",
+      "k086",
+      "k092",
+      "k093",
+      "k094"
+    ],
+    "status": 200
+  },
+  "index_query": "FOR doc IN pd_view SEARCH doc.n IN [0, 1, 1.5, -1] SORT doc._key RETURN doc",
+  "kind": "disagreement",
+  "scan": {
+    "count": 21,
+    "keys": [
+      "k000",
+      "k004",
+      "k011",
+      "k018",
+      "k022",
+      "k025",
+      "k029",
+      "k036",
+      "k043",
+      "k047",
+      "k050",
+      "k054",
+      "k061",
+      "k068",
+      "k072",
+      "k075",
+      "k079",
+      "k086",
+      "k092",
+      "k093",
+      "k094"
+    ],
+    "status": 200
+  },
+  "scan_query": "FOR doc IN pd_fixture FILTER doc.n IN [0, 1, 1.5, -1] SORT doc._key RETURN doc",
+  "verdict": "unexpected"
+}
