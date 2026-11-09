@@ -13,6 +13,7 @@ de9f15651ec4737f5456d8a53f5a7b46fb4a08a1676e79ee9802046795984d13  0012  hang  fu
 c905a1f5aa74941628bb25a2182177783dc3a6a743ea5245f7b5e2b45087c62b  0012  hang  fuzz/findings/2026-11-07-rocksdb-logreader-recyclable-spin/input-4-typeflip2.bin  (fourth witness, steered campaign: 34-byte type-flip, same guard)
 ba6a79187514d706ca7ee368b5166f251674d5c8c3abe3188855461660d29749  0012  hang  fuzz/findings/2026-11-07-rocksdb-logreader-recyclable-spin/input-5-lengthlie2.bin  (fifth witness, steered campaign: 83-byte length-lie desync, same guard)
 c59dc4e44ff99288156d4dff2168f6ac7ddee6b1fc7ccc0754656ffaa6d351ea  0006  unfixed  fuzz/findings/2025-11-06-stringutils-rtrim-strlen/input-2-plus1.bin  (second witness, found by the number-converter rebuild; rTrim strlen OOB. Withdrawal = the arangodb commit fixing rTrim's ctor — lib/Basics, not the velocypack submodule)
+a7c06f9c6c986d351b9170ec56ea81cde2fc62e89dc4329b1491e0f19659b80e  0015  hang  fuzz/findings/2026-11-09-aql-minhashcount-hang/input.bin  (aql_functions_fuzzer: MinHashCount with 4-byte args hangs >15s; the community stub calls NotImplementedEE → THROW_ARANGO_EXCEPTION_FORMAT with getFunctionName(node) on a NOP AstNode. Same input the first campaign found. Withdrawal = fix the NOP node's getString path or use a non-NOP node.)
 
 Both seeds re-enter the corpus in the same commit as the submodule bump that
 carries the fix, at which point their lines are withdrawn naming that commit.
