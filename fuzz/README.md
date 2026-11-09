@@ -152,6 +152,7 @@ drivers start a real server (or a fake peer) and judge behaviour:
 | `hostile_leader.py` | arangod as a replication-v1 *client* | crash or hang of the follower |
 | `pitr_fuzz.py` | PITR archive replay | crash or wrong recovery |
 | `iresearch_pushdown.py` | ArangoSearch `SEARCH` predicates against the equivalent collection scan | the two sides return a different set of documents or different contents |
+| `http_conversation.py` | multi-request HTTP conversations through the real stack: auth flow, cursor lifecycle, streaming cursors, stream transactions (commit and abandoned), replication handshake, pipelined framing | protocol invariants: response framing and Content-Type, the `code`/`error` envelope agreeing with the status, no 500-class answer, deleted cursors staying 404, uncommitted and aborted writes staying invisible, cursor ids unique and non-interfering, the server alive and sanitizer-clean after every step |
 
 `privilege_fuzzer.py` boots a sanitized `arangod` with authentication on and a
 random JWT secret, creates `victim` (owns `victimdb.secret_coll`, whose
@@ -196,3 +197,40 @@ server failure. Cells whose two sides cannot agree by design (ICU collation vs
 byte order for string ranges) and forms `SEARCH` refuses outright are reported
 in their own sections rather than as findings, so the oracle does not drown in
 noise it already knows about.
+
+`http_conversation.py` is the multi-request driver: one input is a *script* of
+several requests, because a single correct response says nothing about the
+conversation around it — a cursor that still answers after it was deleted, a
+transaction whose writes survive an abort, a stream cursor whose batches repeat
+or arrive out of order, a connection left unusable after a malformed request.
+It boots a sanitized `arangod` on a temporary data directory with
+authentication **on** and a JWT secret it writes itself, so every credential
+shape (expired, bad signature, wrong issuer, malformed, unknown user) can be
+forged and must be refused with 401; `--transaction.streaming-idle-timeout` is
+lowered to a few seconds so the abandoned-transaction rollback is observable
+inside a run. `--verify-only` runs every script unmutated first (that is how a
+harness bug is told from a server violation); each later iteration mutates one
+script — junk requests inserted between steps, reordered, dropped, duplicated,
+malformed bodies, wrong methods, mangled paths and headers, requests closed
+mid-flight, pipelined bursts — and judges the result by the protocol oracles
+only, because the script's own expectations stop holding at the first mutation.
+
+```sh
+python3 fuzz/http_conversation.py                       # verify + 100 iterations
+python3 fuzz/http_conversation.py -n 500 --seed 7
+python3 fuzz/http_conversation.py --verify-only --verbose
+python3 fuzz/http_conversation.py --replay 7:41         # one iteration, with its trace
+python3 fuzz/http_conversation.py --no-auth --conversations cursor,stream
+python3 fuzz/http_conversation.py --server-url http://127.0.0.1:8529 --jwt-secret <hex>
+```
+
+The scripts encode this tree's measured API shape and probe the shapes it no
+longer has: a cursor's next batch is `POST /_api/cursor/<id>` (`PUT` and `GET`
+answer 405), a streaming batch is one JSON object per line under
+`Content-Type: application/json` (there is no `application/json-seq` type here;
+one is accepted if a future tree emits it), `/_api/batch` is not routed at all
+(404, so the multi-sub-request framing it used to provide is exercised with
+pipelining on one socket), and `/_api/replication/logger-follow` is gone (the
+handshake is logger-state → batch → inventory → dump → delete). Exit status is
+0/1 for findings and 2 for a harness or boot failure; `--replay` reproduces a
+finding from its `seed:iteration`.
