@@ -45,6 +45,7 @@
 #include <fstream>
 #include <iterator>
 #include <string>
+#include <unistd.h>  // readlink (LoadDict's beside-the-binary path)
 #include <string_view>
 #include <unordered_map>
 #include <vector>
@@ -814,9 +815,37 @@ SM_FN void AddDefaults(Pool& rels, Pool& names, Pool& funcs, Pool& ops,
 // list the target's dictionary carries, so the two cannot drift. A missing
 // file is a warning, not a failure: the fallback names are the common ones.
 SM_FN void LoadDict(Pool& funcs) {
+  // Resolution order: the env var, the current directory, the binary's
+  // own directory, then the repo-root-relative path. The first two cover
+  // a pgfuzz slice (which runs from /out, where build.sh copies the dict
+  // next to the binary); the last covers local development from the repo
+  // root. Without this the pool silently degrades to built-ins exactly
+  // where it matters — in a real campaign.
   const char* path = std::getenv("AQLMUT_DICT");
   if (path == nullptr) {
-    path = "fuzz/aql_functions_fuzzer.dict";
+    // try next to the binary first (pgfuzz copies it there)
+#if defined(__linux__) || defined(__APPLE__)
+    char self[4096];
+    auto n = readlink("/proc/self/exe", self, sizeof self - 1);
+    if (n > 0) {
+      self[n] = '\0';
+      std::string d(self);
+      auto slash = d.find_last_of('/');
+      if (slash != std::string::npos) {
+        std::string beside = d.substr(0, slash + 1) + "aql_functions_fuzzer.dict";
+        if (std::ifstream(beside).good()) {
+          path = strdup(beside.c_str());
+        }
+      }
+    }
+#endif
+    if (path == nullptr) {
+      path = "aql_functions_fuzzer.dict";  // cwd (pgfuzz's /out)
+    }
+    // fall through to the repo-root path only if neither is found
+    if (!std::ifstream(path).good()) {
+      path = "fuzz/aql_functions_fuzzer.dict";  // repo root (dev)
+    }
   }
   std::ifstream in(path);
   if (!in) {
