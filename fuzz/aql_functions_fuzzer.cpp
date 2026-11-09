@@ -52,6 +52,17 @@ using FnImpl = arangodb::aql::AqlValue (*)(
 std::vector<FnImpl> fnImpls;
 bool initialised = false;
 
+// Per-function arity: the generated .inc carries {impl, min, max} from the
+// registration table's params string, so the harness clamps arguments to the
+// range the parser would enforce. This is parser parity for arity, the same
+// defence as the padding/bounding but per-function instead of global.
+struct FnEntry {
+  FnImpl impl;
+  std::size_t minArgs;
+  std::size_t maxArgs;
+};
+std::vector<FnEntry> fnTable;
+
 arangodb::aql::AstNode node(arangodb::aql::NODE_TYPE_NOP);
 arangodb::fuzz::NullExpressionContext ctx;
 
@@ -61,19 +72,21 @@ arangodb::fuzz::NullExpressionContext ctx;
 #include "aql_functions_list.inc"
 
 static void ensureFunctions() {
+  // fnTable is populated by the .inc at static init (the push_backs are
+  // at namespace scope inside a static initializer struct, not in a
+  // function — the generated code handles it)
   if (!initialised) {
-    registerAll(fnImpls);
     initialised = true;
   }
 }
 
 extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
   if (size < 3 || size > (1u << 15)) return 0;
-  ensureFunctions();
-  if (fnImpls.empty()) return 0;
+  if (fnTable.empty()) return 0;
 
   uint16_t sel = static_cast<uint16_t>(data[0] | (data[1] << 8));
-  auto impl = fnImpls[sel % fnImpls.size()];
+  auto const& entry = fnTable[sel % fnTable.size()];
+  auto impl = entry.impl;
 
   std::vector<std::vector<uint8_t>> blobs;
   std::vector<uint8_t> cur;
@@ -105,20 +118,16 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t const* data, std::size_t size) {
   }
   if (values.empty()) return 0;
 
-  // Pad to 2 arguments minimum: several functions have switches over
-  // parameters.size() whose `default:` is ADB_UNREACHABLE (which is UB,
-  // not a throw). In the real path the parser's arity check prevents the
-  // call; the direct-call harness must enforce it the same way.
-  while (values.size() < 2) {
+  // Per-function arity clamping — parser parity. The .inc carries each
+  // function's declared {min, max} from the registration table's params
+  // string, so the harness clamps to the range the parser would enforce.
+  // Functions with ADB_UNREACHABLE in their parameters.size() switch are
+  // protected by arity they were declared with, not a global guess.
+  while (values.size() < entry.minArgs) {
     values.emplace_back(std::string());
   }
-  // Upper bound: AQL functions take at most 7 declared parameters (the
-  // widest is APPROX_NEAR with 7). More than that hits the same
-  // ADB_UNREACHABLE switch-arm problem in the other direction, and a
-  // several-hundred-value span is slow for no coverage gain.
-  constexpr std::size_t kMaxArgs = 7;
-  if (values.size() > kMaxArgs) {
-    values.resize(kMaxArgs);
+  if (values.size() > entry.maxArgs) {
+    values.resize(entry.maxArgs);
   }
 
   // ExpressionContext deliberately null (see DEVIATIONS above)
