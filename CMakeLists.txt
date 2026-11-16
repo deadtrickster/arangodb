@@ -1309,6 +1309,16 @@ add_custom_target(arangodb
 
 add_subdirectory(utils/gdb-pretty-printers/immer/test)
 
+# Declared here, not inside fuzz/CMakeLists.txt: a cache variable declared in a
+# subdirectory that is only added when the variable is already true does not
+# exist in a default configure — invisible in `cmake -LA` and cmake-gui, and
+# undocumented anywhere a reader of this file would look.
+option(USE_FUZZERS "build the libFuzzer harnesses under fuzz/" OFF)
+
+if (USE_FUZZERS)
+  add_subdirectory(fuzz)
+endif()
+
 # Generate JS_SHA1SUM.txt over everything installed into the JS directory.
 # Declared last on purpose: install rules run in declaration order (CMP0082),
 # so this executes after every other install rule — including the client-tools

@@ -54,8 +54,6 @@
 #include "Cluster/RebootTracker.h"
 #include "Cluster/ServerState.h"
 #include "Containers/FlatHashMap.h"
-#include "Enterprise/VocBase/VirtualClusterSmartEdgeCollection.h"
-#include "Enterprise/VocBase/VirtualSmartEdgeCollection.h"
 #include "ExecutionNode/IndexNode.h"
 #include "Logger/LogMacros.h"
 #include "RestServer/DatabaseFeature.h"

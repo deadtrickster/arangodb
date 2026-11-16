@@ -619,8 +619,6 @@ arangodb::Result hotRestoreCoordinator(ClusterFeature& feature,
   // Check if the version matches the current version
   if (!ignoreVersion) {
     TRI_ASSERT(list.size() == 1);
-    using arangodb::methods::Version;
-    using arangodb::methods::VersionResult;
 #ifdef USE_ENTERPRISE
     // Will never be called in Community Edition
     bool autoUpgradeNeeded;  // not actually used

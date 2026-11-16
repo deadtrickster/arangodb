@@ -46,6 +46,17 @@
 
 namespace arangodb::graph {
 
+#ifndef USE_ENTERPRISE
+namespace enterprise {
+// Community builds have no SmartGraphProvider, but the queue selection below
+// compares against it as a type, so a declaration that is never completed
+// suffices. Keep the template parameter list in sync with
+// Enterprise/Graph/Providers/SmartGraphProvider.h.
+template<class Step>
+struct SmartGraphProvider;
+}  // namespace enterprise
+#endif
+
 template<class Provider>
 using TwoSidedEnumeratorWithProvider = TwoSidedEnumerator<
     Provider,

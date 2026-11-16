@@ -46,8 +46,16 @@ soc-pokec-*
 
 Documentation/man
 
+# scratch build scripts at the repo root; the oss-fuzz recipe under fuzz/ is
+# deliberate (fuzz/build.sh) and must not be ignored
 build.sh
-/build*/
+!/fuzz/build.sh
+# no trailing slash: the pattern must also match a SYMLINK named build or
+# build-asan (git does not follow symlinks, and /build*/ with a slash matches
+# directories only - a relocated-tree symlink would land in git status as
+# ?? build and be committed by git add -A as a dangling link). Root-anchored,
+# so it cannot touch fuzz/build.sh above.
+/build*
 Build64/
 Build32/
 Debug64/
